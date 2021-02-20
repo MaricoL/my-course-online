@@ -320,20 +320,7 @@
     </div>
 
     <div class="main-container ace-save-state" id="main-container">
-<!--      <script type="text/javascript">-->
-<!--        try {-->
-<!--          ace.settings.loadState('main-container')-->
-<!--        } catch (e) {-->
-<!--        }-->
-<!--      </script>-->
-
       <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
-<!--        <script type="text/javascript">-->
-<!--          try {-->
-<!--            ace.settings.loadState('sidebar')-->
-<!--          } catch (e) {-->
-<!--          }-->
-<!--        </script>-->
 
         <div class="sidebar-shortcuts" id="sidebar-shortcuts">
           <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -952,7 +939,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <!-- PAGE CONTENT BEGINS -->
-
+                <router-view/>
                 <!-- PAGE CONTENT ENDS -->
               </div><!-- /.col -->
             </div><!-- /.row -->
