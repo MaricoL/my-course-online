@@ -27,20 +27,20 @@
         </jdbcConnection>
 
         <!-- domain类的位置 -->
-        <javaModelGenerator targetProject="src\main\java"
+        <javaModelGenerator targetProject="src/main/java"
                             targetPackage="com.course.server.domain"/>
 
         <!-- mapper xml的位置 -->
-        <sqlMapGenerator targetProject="src\main\resources"
+        <sqlMapGenerator targetProject="src/main/resources"
                          targetPackage="mapper"/>
 
         <!-- mapper类的位置 -->
-        <javaClientGenerator targetProject="src\main\java"
+        <javaClientGenerator targetProject="src/main/java"
                              targetPackage="com.course.server.mapper"
                              type="XMLMAPPER" />
 
-        <table tableName="test" domainObjectName="Test"/>
-<!--        <table tableName="chapter" domainObjectName="Chapter"/>-->
+<!--        <table tableName="test" domainObjectName="Test"/>-->
+        <table tableName="chapter" domainObjectName="Chapter"/>
 <!--        <table tableName="section" domainObjectName="Section"/>-->
 <!--        <table tableName="course" domainObjectName="Course"/>-->
 <!--        <table tableName="course_content" domainObjectName="CourseContent"/>-->
