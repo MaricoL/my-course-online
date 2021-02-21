@@ -90,10 +90,16 @@ export default {
   methods: {
     list() {
       const _this = this;
-      _this.$ajax.get('http://localhost:9000/business/admin/chapter/list')
+      // _this.$ajax.get('http://localhost:9000/business/admin/chapter/list')
+      // jquery ajax 默认是表单的方式 ，axios ajax 默认是以JSON的方式
+      // 在这里需要在 ChapterController 所对应的 list() 方法行参上加上 @RequestBody 注解
+      _this.$ajax.post('http://localhost:9000/business/admin/chapter/list',{
+        page: 2,
+        size: 5
+      })
           .then(response => {
             // console.log(response);
-            _this.chapters = response.data;
+            _this.chapters = response.data.list;
           })
     }
   }
