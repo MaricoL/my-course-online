@@ -6,7 +6,11 @@
 
 <script>
 export default {
-  name: "welcome"
+  name: "welcome",
+  mounted() {
+    // 调用父组件的 activeSideBar 方法
+    this.$parent.activeSideBar('welcome-sidebar');
+  }
 }
 </script>
 

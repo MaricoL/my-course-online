@@ -184,7 +184,8 @@
                   <ul class="dropdown-menu dropdown-navbar">
                     <li>
                       <a href="#" class="clearfix">
-                        <img src="../../public/ace/assets/images/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar"/>
+                        <img src="../../public/ace/assets/images/avatars/avatar.png" class="msg-photo"
+                             alt="Alex's Avatar"/>
                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Alex:</span>
@@ -201,7 +202,8 @@
 
                     <li>
                       <a href="#" class="clearfix">
-                        <img src="../../public/ace/assets/images/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar"/>
+                        <img src="../../public/ace/assets/images/avatars/avatar3.png" class="msg-photo"
+                             alt="Susan's Avatar"/>
                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Susan:</span>
@@ -218,7 +220,8 @@
 
                     <li>
                       <a href="#" class="clearfix">
-                        <img src="../../public/ace/assets/images/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar"/>
+                        <img src="../../public/ace/assets/images/avatars/avatar4.png" class="msg-photo"
+                             alt="Bob's Avatar"/>
                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Bob:</span>
@@ -235,7 +238,8 @@
 
                     <li>
                       <a href="#" class="clearfix">
-                        <img src="../../public/ace/assets/images/avatars/avatar2.png" class="msg-photo" alt="Kate's Avatar"/>
+                        <img src="../../public/ace/assets/images/avatars/avatar2.png" class="msg-photo"
+                             alt="Kate's Avatar"/>
                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Kate:</span>
@@ -252,7 +256,8 @@
 
                     <li>
                       <a href="#" class="clearfix">
-                        <img src="../../public/ace/assets/images/avatars/avatar5.png" class="msg-photo" alt="Fred's Avatar"/>
+                        <img src="../../public/ace/assets/images/avatars/avatar5.png" class="msg-photo"
+                             alt="Fred's Avatar"/>
                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Fred:</span>
@@ -353,17 +358,18 @@
         </div><!-- /.sidebar-shortcuts -->
 
         <ul class="nav nav-list">
-          <li class="">
-            <a href="index.html">
+          <li class="" id="welcome-sidebar">
+            <router-link to="/admin/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> 欢迎 </span>
-            </a>
+            </router-link>
 
             <b class="arrow"></b>
           </li>
 
 
-          <li class="active open">
+          <!-- 系统管理 -->
+          <li class="">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
@@ -391,6 +397,30 @@
 
                 <b class="arrow"></b>
               </li>
+            </ul>
+          </li>
+
+          <!-- 业务管理 -->
+          <li class="active open">
+            <a href="#" class="dropdown-toggle">
+              <i class="menu-icon fa fa-list"></i>
+              <span class="menu-text"> 系统管理 </span>
+
+              <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+              <li class="active" id="business-chapter-sidebar">
+                <router-link to="/admin/business/chapter">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  大章管理
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
+
             </ul>
           </li>
 
@@ -459,6 +489,25 @@ export default {
   mounted() {
     $('body').removeClass('login-layout light-login');
     $('body').addClass('no-skin');
+  },
+  methods: {
+    //  菜单激活样式，id为当前点击的菜单id
+    activeSideBar(id) {
+      const sideBar = $(`#${id}`);
+
+      // 对于二级菜单，去掉兄弟菜单的样式，自己添加active样式
+      sideBar.siblings().removeClass('active');
+      sideBar.siblings().find('li').removeClass('active');
+      sideBar.addClass('active');
+
+      // 对于一级菜单，去掉父菜单的兄弟菜单样式，父菜单添加active open样式
+      const parentLi = sideBar.parents("li");
+      if(parentLi) {
+        parentLi.siblings().removeClass('active open');
+        parentLi.addClass('active open');
+      }
+
+    }
   }
 }
 </script>
