@@ -90,9 +90,9 @@ export default {
   methods: {
     list() {
       const _this = this;
-      _this.$ajax.get('http://localhost:9002/business/admin/chapter/list')
+      _this.$ajax.get('http://localhost:9000/business/admin/chapter/list')
           .then(response => {
-            console.log(response);
+            // console.log(response);
             _this.chapters = response.data;
           })
     }
