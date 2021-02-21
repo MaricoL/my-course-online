@@ -8,8 +8,9 @@
 export default {
   name: "welcome",
   mounted() {
+    // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
-    this.$parent.activeSideBar('welcome-sidebar');
+    // this.$parent.activeSideBar('welcome-sidebar');
   }
 }
 </script>

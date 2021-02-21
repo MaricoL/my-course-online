@@ -490,6 +490,19 @@ export default {
     $('body').removeClass('login-layout light-login');
     $('body').addClass('no-skin');
   },
+  watch: {
+    // 激活样式方法二：
+    // 监听路由是否发生变化
+    $route: {
+      handler(oldRoute,newRoute) {
+        console.log(`路由发生变化：${oldRoute.path} => ${newRoute.path}`);
+        let _this = this;
+        _this.$nextTick(() => {
+          _this.activeSideBar(_this.$route.name.replace('/', '-') + '-sidebar');
+        });
+      }
+    }
+  },
   methods: {
     //  菜单激活样式，id为当前点击的菜单id
     activeSideBar(id) {
