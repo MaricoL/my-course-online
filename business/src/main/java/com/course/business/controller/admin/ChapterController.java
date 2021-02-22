@@ -2,6 +2,7 @@ package com.course.business.controller.admin;
 
 import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
+import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,16 +24,20 @@ public class ChapterController {
 
     // @RequestBody：前端发送POST请求，数据为JSON格式，需要在行参上加上此注解
     @PostMapping("/list")
-    public PageDto<ChapterDto> chapter(@RequestBody PageDto<ChapterDto> pageDto) {
+    public ResponseDto<?> chapter(@RequestBody PageDto<ChapterDto> pageDto) {
+        ResponseDto<PageDto<ChapterDto>> responseDto = new ResponseDto<>();
         LOG.info("pageDto:{}", pageDto);
         chapterService.list(pageDto);
-        return pageDto;
+        responseDto.setContent(pageDto);
+        return responseDto;
     }
 
     @PostMapping("/save")
-    public ChapterDto save(@RequestBody ChapterDto chapterDto) {
+    public ResponseDto<?> save(@RequestBody ChapterDto chapterDto) {
+        ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
         LOG.info("chapterDto:{}", chapterDto);
         chapterService.save(chapterDto);
-        return chapterDto;
+        responseDto.setContent(chapterDto);
+        return responseDto;
     }
 }

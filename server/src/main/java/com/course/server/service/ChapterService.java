@@ -5,6 +5,7 @@ import com.course.server.domain.ChapterExample;
 import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.ChapterMapper;
+import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -34,13 +35,8 @@ public class ChapterService {
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
 
-        List<ChapterDto> chapterDtoList = new ArrayList<>();
-        for (int i = 0; i < chapterList.size(); i++) {
-            Chapter chapter = chapterList.get(i);
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
+
         pageDto.setList(chapterDtoList);
     }
 
@@ -48,8 +44,7 @@ public class ChapterService {
     public void save(ChapterDto chapterDto) {
         // 设置 短型UUID
         chapterDto.setId(UuidUtil.getShortUuid());
-        Chapter chapter = new Chapter();
-        BeanUtils.copyProperties(chapterDto, chapter);
+        Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         chapterMapper.insert(chapter);
     }
 }

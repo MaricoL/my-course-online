@@ -89,11 +89,11 @@
     </table>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="form_modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" data-target="#mymodal-data" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             <h5 class="modal-title" id="exampleModalLabel">表单</h5>
@@ -164,7 +164,15 @@ export default {
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
           _this.chapter
       ).then((response) => {
-        console.log("新增大章列表结果：", response);
+        const responseDto = response.data;
+        if(responseDto.success){
+          console.log("新增大章列表结果：", responseDto.content);
+          // 关闭模态框
+          $('.modal').modal('hide');
+          // 刷新表格数据
+          _this.list(1);
+        }
+
       })
     },
 
@@ -175,8 +183,9 @@ export default {
         size: _this.$refs.pagination.size,
       }).then((response) => {
         console.log("查询大章列表结果：", response);
-        _this.chapters = response.data.list;
-        _this.$refs.pagination.render(page, response.data.total);
+        const responseDto = response.data;
+        _this.chapters = responseDto.content.list;
+        _this.$refs.pagination.render(page, responseDto.content.total);
 
       })
     }
