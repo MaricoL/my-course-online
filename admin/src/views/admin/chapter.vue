@@ -104,20 +104,20 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="名称">
+                  <input type="text" class="form-control" placeholder="名称" v-model="chapter.name">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">课程ID</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="课程ID">
+                  <input type="text" class="form-control" placeholder="课程ID" v-model="chapter.courseId">
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" @click="save()">保存</button>
           </div>
         </div>
       </div>
@@ -137,6 +137,7 @@ export default {
   },
   data() {
     return {
+      chapter: {},
       chapters: []
     }
   },
@@ -157,6 +158,14 @@ export default {
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
       });
+    },
+    save() {
+      let _this = this;
+      _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
+          _this.chapter
+      ).then((response) => {
+        console.log("新增大章列表结果：", response);
+      })
     },
 
     list(page) {
