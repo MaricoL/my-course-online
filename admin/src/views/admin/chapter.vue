@@ -117,6 +117,7 @@
 <script>
 import Pagination from "../../components/pagination";
 import Swal from 'sweetalert2'
+import toast from '../../static/js/toast'
 
 export default {
   name: "chapter",
@@ -193,11 +194,7 @@ export default {
                 if (responseDto.success) {
                   // 刷新表格数据
                   _this.list(1);
-                  Swal.fire(
-                      '删除成功!',
-                      '数据已被删除',
-                      'success'
-                  )
+                  toast.success("删除成功！");
                 }
               })
         }
