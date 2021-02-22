@@ -117,7 +117,8 @@
 <script>
 import Pagination from "../../components/pagination";
 import Swal from 'sweetalert2'
-import toast from '../../static/js/toast'
+import toast from '../../../public/static/js/toast'
+import loading from '../../../public/static/js/loading'
 
 export default {
   name: "chapter",
@@ -187,8 +188,11 @@ export default {
         confirmButtonText: '删除!'
       }).then((result) => {
         if (result.isConfirmed) {
+          // loading框
+          loading.show();
           _this.$ajax.delete(`http://127.0.0.1:9000/business/admin/chapter/delete/${id}`)
               .then(response => {
+                loading.hide();
                 console.log("删除大章列表结果：", response);
                 let responseDto = response.data;
                 if (responseDto.success) {
