@@ -31,24 +31,19 @@
         <td>{{ chapter.name }}</td>
         <td>{{ chapter.courseId }}</td>
         <td>
+          <!-- 在小屏幕和超小屏幕上隐藏 -->
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-success">
-              <i class="ace-icon fa fa-check bigger-120"></i>
-            </button>
-
-            <button class="btn btn-xs btn-info">
+            <button class="btn btn-xs btn-info" @click="edit(chapter)">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
 
-            <button class="btn btn-xs btn-danger">
+            <button class="btn btn-xs btn-danger" @click="del(chapter.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
 
-            <button class="btn btn-xs btn-warning">
-              <i class="ace-icon fa fa-flag bigger-120"></i>
-            </button>
           </div>
 
+          <!-- 在中屏幕和大屏幕上隐藏 -->
           <div class="hidden-md hidden-lg">
             <div class="inline pos-rel">
               <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
@@ -56,14 +51,6 @@
               </button>
 
               <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-																			<span class="blue">
-																				<i class="ace-icon fa fa-search-plus bigger-120"></i>
-																			</span>
-                  </a>
-                </li>
-
                 <li>
                   <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
 																			<span class="green">
@@ -154,10 +141,21 @@ export default {
   methods: {
     add() {
       // $('.modal').modal('show');
+      let _this = this;
+      // 清空模态框中的文字
+      _this.chapter = {};
       $('.modal').modal({
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
       });
+    },
+    edit(chapter) {
+      let _this = this;
+      // _this.chapter = chapter 会在修改模态框中的字段时，自动修改背后数据表格的值
+      // _this.chapter = chapter;
+      // _this.chapter = $.extend({}, chapter);
+      _this.chapter = Object.assign({}, chapter);
+      $('.modal').modal('show');
     },
     save() {
       let _this = this;
@@ -165,7 +163,7 @@ export default {
           _this.chapter
       ).then((response) => {
         const responseDto = response.data;
-        if(responseDto.success){
+        if (responseDto.success) {
           console.log("新增大章列表结果：", responseDto.content);
           // 关闭模态框
           $('.modal').modal('hide');
@@ -175,7 +173,18 @@ export default {
 
       })
     },
-
+    del(id) {
+      let _this = this;
+      _this.$ajax.delete(`http://127.0.0.1:9000/business/admin/chapter/delete/${id}`)
+          .then(response => {
+            console.log("删除大章列表结果：", response);
+            let responseDto = response.data;
+            if (responseDto.success) {
+              // 刷新表格数据
+              _this.list(1);
+            }
+          })
+    },
     list(page) {
       let _this = this;
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {

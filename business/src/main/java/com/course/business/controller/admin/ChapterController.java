@@ -6,10 +6,7 @@ import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -38,6 +35,15 @@ public class ChapterController {
         LOG.info("chapterDto:{}", chapterDto);
         chapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
+        return responseDto;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto<?> delete(@PathVariable("id") String chapterId) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
+        LOG.info("chapterId:{}", chapterId);
+        chapterService.delete(chapterId);
+        responseDto.setContent(chapterId);
         return responseDto;
     }
 }

@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -40,11 +41,30 @@ public class ChapterService {
         pageDto.setList(chapterDtoList);
     }
 
-    // 新增大章
+    // 新增/更新大章
     public void save(ChapterDto chapterDto) {
-        // 设置 短型UUID
-        chapterDto.setId(UuidUtil.getShortUuid());
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
+        if (StringUtils.isEmpty(chapterDto.getId())) {
+            insert(chapter);
+        }else{
+            update(chapter);
+        }
+    }
+
+    // 新增大章
+    private void insert(Chapter chapter) {
+        // 设置 短型UUID
+        chapter.setId(UuidUtil.getShortUuid());
         chapterMapper.insert(chapter);
+    }
+
+    // 更新大章
+    private void update(Chapter chapter) {
+        chapterMapper.updateByPrimaryKey(chapter);
+    }
+
+    // 删除大章
+    public void delete(String chapterId) {
+        chapterMapper.deleteByPrimaryKey(chapterId);
     }
 }
