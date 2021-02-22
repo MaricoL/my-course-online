@@ -1,11 +1,15 @@
 <template>
   <div>
     <p>
-      <button @click="list()" class="btn btn-white btn-default btn-round">
+      <button @click="list(1)" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh"></i>
         刷新
       </button>
     </p>
+
+    <!--  itemCount：最多显示8个页码  -->
+    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr>
@@ -82,34 +86,56 @@
 </template>
 
 <script>
+import Pagination from "../../components/pagination";
+
 export default {
   name: "chapter",
+  components: {
+    Pagination
+  },
   data() {
     return {
       chapters: []
     }
   },
   mounted() {
+    let _this = this;
+    // 每页 5 条数据
+    _this.$refs.pagination.size = 5;
+    _this.list(1);
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
     // this.$parent.activeSideBar('business-chapter-sidebar');
-    this.list();
+    // this.list();
   },
   methods: {
-    list() {
-      const _this = this;
-      // _this.$ajax.get('http://localhost:9000/business/admin/chapter/list')
-      // jquery ajax 默认是表单的方式 ，axios ajax 默认是以JSON的方式
-      // 在这里需要在 ChapterController 所对应的 list() 方法行参上加上 @RequestBody 注解
-      _this.$ajax.post('http://localhost:9000/business/admin/chapter/list', {
-        page: 2,
-        size: 5
+    list(page) {
+      let _this = this;
+      _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
+        page: page,
+        size: _this.$refs.pagination.size,
+      }).then((response) => {
+        console.log("查询大章列表结果：", response);
+        _this.chapters = response.data.list;
+        _this.$refs.pagination.render(page, response.data.total);
+
       })
-          .then(response => {
-            // console.log(response);
-            _this.chapters = response.data.list;
-          })
     }
+
+    // list() {
+    //   const _this = this;
+    //   // _this.$ajax.get('http://localhost:9000/business/admin/chapter/list')
+    //   // jquery ajax 默认是表单的方式 ，axios ajax 默认是以JSON的方式
+    //   // 在这里需要在 ChapterController 所对应的 list() 方法行参上加上 @RequestBody 注解
+    //   _this.$ajax.post('http://localhost:9000/business/admin/chapter/list', {
+    //     page: 2,
+    //     size: 5
+    //   })
+    //       .then(response => {
+    //         // console.log(response);
+    //         _this.chapters = response.data.list;
+    //       })
+    // }
   }
 }
 </script>

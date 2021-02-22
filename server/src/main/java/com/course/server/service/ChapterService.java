@@ -30,7 +30,7 @@ public class ChapterService {
         List<Chapter> chapterList = chapterMapper.selectByExample(example);
 
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
-        pageInfo.setTotal(pageInfo.getTotal());
+        pageDto.setTotal(pageInfo.getTotal());
 
         List<ChapterDto> chapterDtoList = new ArrayList<>();
         for (int i = 0; i < chapterList.size(); i++) {
