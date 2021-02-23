@@ -178,7 +178,7 @@ export default {
         const responseDto = response.data;
         if (responseDto.success) {
           Toast.success("保存成功！");
-          console.log("新增大章列表结果：", responseDto.content);
+          // console.log("新增大章列表结果：", responseDto.content);
           // 关闭模态框
           $('.modal').modal('hide');
           // 刷新表格数据
@@ -196,7 +196,7 @@ export default {
         Loading.show();
         _this.$ajax.delete(`http://127.0.0.1:9000/business/admin/chapter/delete/${id}`)
             .then(response => {
-              console.log("删除大章列表结果：", response);
+              // console.log("删除大章列表结果：", response);
               let responseDto = response.data;
               if (responseDto.success) {
                 Loading.hide();
@@ -214,7 +214,7 @@ export default {
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response) => {
-        console.log("查询大章列表结果：", response);
+        // console.log("查询大章列表结果：", response);
         const responseDto = response.data;
         _this.chapters = responseDto.content.list;
         _this.$refs.pagination.render(page, responseDto.content.total);

@@ -21,6 +21,9 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
+    /**
+     * 查询所有大章
+     */
     // @RequestBody：前端发送POST请求，数据为JSON格式，需要在行参上加上此注解
     @PostMapping("/list")
     public ResponseDto<?> list(@RequestBody PageDto<ChapterDto> pageDto) {
@@ -31,6 +34,9 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 新增或更新大章
+     */
     @PostMapping("/save")
     public ResponseDto<?> save(@RequestBody ChapterDto chapterDto) {
         LOG.info("chapterDto:{}", chapterDto);
@@ -59,6 +65,9 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 删除大章
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseDto<?> delete(@PathVariable("id") String chapterId) {
         ResponseDto<String> responseDto = new ResponseDto<>();
