@@ -120,6 +120,7 @@ import Swal from 'sweetalert2'
 import Toast from '../../../public/static/js/Toast'
 import Loading from '../../../public/static/js/Loading'
 import Confirm from '../../../public/static/js/Confirm'
+import Validator from '../../../public/static/js/Validator'
 
 export default {
   name: "chapter",
@@ -163,16 +164,27 @@ export default {
     },
     save() {
       let _this = this;
+      // 保存校验
+      // if (!Validator.require(_this.chapter.name, "名称") ||
+      //     !Validator.require(_this.chapter.courseId, "课程ID") ||
+      //     !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
+      //   return;
+      // }
+      Loading.show();
       _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
           _this.chapter
       ).then((response) => {
+        Loading.hide();
         const responseDto = response.data;
         if (responseDto.success) {
+          Toast.success("保存成功！");
           console.log("新增大章列表结果：", responseDto.content);
           // 关闭模态框
           $('.modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
+        }else{
+          Toast.warning(responseDto.message);
         }
 
       })

@@ -20,7 +20,7 @@ export default {
             icon: 'success',
             title: message,
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
         })
         // 修改为上述弹框，显示效果更佳
         // Toast.fire({
@@ -36,7 +36,7 @@ export default {
             icon: 'error',
             title: message,
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
         })
     },
     warning(message) {
@@ -45,7 +45,7 @@ export default {
             icon: 'warning',
             title: message,
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
         })
     }
 
