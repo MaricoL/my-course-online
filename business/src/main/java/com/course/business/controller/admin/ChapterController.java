@@ -16,13 +16,14 @@ import javax.annotation.Resource;
 public class ChapterController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
+    public static final String BUSINESS_NAME = "大章";
 
     @Resource
     private ChapterService chapterService;
 
     // @RequestBody：前端发送POST请求，数据为JSON格式，需要在行参上加上此注解
     @PostMapping("/list")
-    public ResponseDto<?> chapter(@RequestBody PageDto<ChapterDto> pageDto) {
+    public ResponseDto<?> list(@RequestBody PageDto<ChapterDto> pageDto) {
         ResponseDto<PageDto<ChapterDto>> responseDto = new ResponseDto<>();
         LOG.info("pageDto:{}", pageDto);
         chapterService.list(pageDto);
