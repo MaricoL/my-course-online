@@ -68,7 +68,7 @@ export default {
      * @param total
      */
     render(page, total) {
-      console.log(page, total);
+      // console.log(page, total);
       let _this = this;
       _this.page = page;
       _this.total = total;

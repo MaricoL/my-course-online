@@ -44,10 +44,11 @@ public class ChapterService {
     // 新增/更新大章
     public void save(ChapterDto chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
-        if (StringUtils.isEmpty(chapterDto.getId())) {
-            insert(chapter);
-        }else{
+        // StringUtils.isEmpty() 已被弃用
+        if (StringUtils.hasText(chapterDto.getId())) {
             update(chapter);
+        }else{
+            insert(chapter);
         }
     }
 
