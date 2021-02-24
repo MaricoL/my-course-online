@@ -31,6 +31,24 @@ public class DBUtils {
         return conn;
     }
 
+
+    // 获取数据库表注释
+    public static String getTableComment(String tableName) throws Exception {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        String sql = "select table_comment from information_schema.tables Where table_name = '" + tableName + "'";
+        ResultSet rs = stmt.executeQuery(sql);
+        String tableNameCn = null;
+        while (rs.next()) {
+            tableNameCn = rs.getString("table_comment");
+        }
+        rs.close();
+        stmt.close();
+        conn.close();
+        System.out.println("表名：" + tableNameCn);
+        return tableNameCn;
+    }
+
     public static List<Field> getColumnByTableName(String domain) throws Exception {
         List<Field> fieldList = new ArrayList<>();
         Connection conn = getConnection();
