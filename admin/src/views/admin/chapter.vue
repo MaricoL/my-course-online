@@ -171,7 +171,7 @@ export default {
       //   return;
       // }
       Loading.show();
-      _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/chapter/save`,
           _this.chapter
       ).then((response) => {
         Loading.hide();
@@ -183,7 +183,7 @@ export default {
           $('.modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
-        }else{
+        } else {
           Toast.warning(responseDto.message);
         }
 
@@ -194,7 +194,7 @@ export default {
       Confirm.show("删除大章后不可恢复，确认删除?", () => {
         // loading框
         Loading.show();
-        _this.$ajax.delete(`http://127.0.0.1:9000/business/admin/chapter/delete/${id}`)
+        _this.$ajax.delete(`${process.env.VUE_APP_SERVER}/business/admin/chapter/delete/${id}`)
             .then(response => {
               // console.log("删除大章列表结果：", response);
               let responseDto = response.data;
@@ -209,8 +209,10 @@ export default {
 
     },
     list(page) {
+      console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
+
       let _this = this;
-      _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/chapter/list`, {
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response) => {
