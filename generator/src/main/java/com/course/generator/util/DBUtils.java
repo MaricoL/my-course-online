@@ -59,6 +59,7 @@ public class DBUtils {
             String columnName = rs.getString("Field");
             String type = rs.getString("Type");
             String comment = rs.getString("Comment");
+            String nullable = rs.getString("Null");
             Field field = new Field();
             field.setName(columnName);
             field.setNameHump(lineToHump(columnName));
@@ -67,6 +68,8 @@ public class DBUtils {
             field.setType(type);
             field.setJavaType(sqlTypeToJavaType(type));
             field.setComment(comment);
+            field.setNullable("YES".equals(nullable));
+            field.setLength(extractLength(type));
             fieldList.add(field);
         }
         rs.close();
@@ -74,6 +77,14 @@ public class DBUtils {
         conn.close();
         System.out.println(domain + "表的列信息：" + fieldList);
         return fieldList;
+    }
+
+    // 从 type 类型中提取长度
+    // 如：char(8)
+    private static Integer extractLength(String type) {
+        return type.toUpperCase().contains("VARCHAR") ?
+                Integer.parseInt(type.substring(type.indexOf("(") + 1, type.length() - 1)) :
+                0;
     }
 
     // 将列名中的下划线转换成小驼峰

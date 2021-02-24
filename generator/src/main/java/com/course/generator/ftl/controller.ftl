@@ -46,6 +46,14 @@ public class ${Domain}Controller {
  *下面的异常处理非常局限，使用{@link com.course.${MODULE}.controller.ControllerExceptionHandler}统一处理异常
  */
         // 保存校验
+        <#list fieldList as field>
+          <#if !field.nullable>
+            ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}");
+          </#if>
+          <#if (field.length > 0)>
+            ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}", 1, ${field.length});
+          </#if>
+        </#list>
         ${domain}Service.save(${domain}Dto);
         responseDto.setContent(${domain}Dto);
         return responseDto;

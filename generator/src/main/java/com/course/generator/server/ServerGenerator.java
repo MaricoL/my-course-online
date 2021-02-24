@@ -32,7 +32,8 @@ public class ServerGenerator {
             .replaceAll("\\W", "\\" + FILE_SEPARATOR);
     static String toControllerPath = MODULE + "/src/main/java/com/course/business/controller/admin/"
             .replaceAll("\\W", "\\" + FILE_SEPARATOR);
-    static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
+    static String generatorConfigPath = "server/src/main/resources/generator/generatorConfig.xml"
+            .replaceAll("/", "\\" + FILE_SEPARATOR);/**/
 
 
     public static void main(String[] args) throws Exception {
