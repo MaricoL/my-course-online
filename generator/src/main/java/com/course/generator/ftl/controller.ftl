@@ -1,4 +1,4 @@
-package com.course.business.controller.admin;
+package com.course.${MODULE}.controller.admin;
 
 import com.course.server.dto.${Domain}Dto;
 import com.course.server.dto.PageDto;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public class ${Domain}Controller {
 
     private static final Logger LOG = LoggerFactory.getLogger(${Domain}Controller.class);
-    public static final String BUSINESS_NAME = "大章";
+    public static final String BUSINESS_NAME = "${tableNameCn}";
 
     @Resource
     private ${Domain}Service ${domain}Service;
@@ -43,7 +43,7 @@ public class ${Domain}Controller {
         ResponseDto<${Domain}Dto> responseDto = new ResponseDto<>();
 
 /**
- *下面的异常处理非常局限，使用{@link com.course.business.controller.ControllerExceptionHandler}统一处理异常
+ *下面的异常处理非常局限，使用{@link com.course.${MODULE}.controller.ControllerExceptionHandler}统一处理异常
  */
         // 保存校验
         ${domain}Service.save(${domain}Dto);
