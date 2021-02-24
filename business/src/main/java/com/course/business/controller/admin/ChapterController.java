@@ -43,7 +43,7 @@ public class ChapterController {
         ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
 
 /**
- *下面的异常处理非常局限，使用{@link ChapterController}统一处理异常
+ *下面的异常处理非常局限，使用{@link com.course.business.controller.ControllerExceptionHandler}统一处理异常
  */
 //        // 保存校验
 //        try {
