@@ -24,8 +24,9 @@ public class VueGenerator {
     // 由于 FILE_SEPARATOR \ 为转义字符，所以需要加上 \ 进行转义，否则阿静报错
 
     static String toVuePath = "admin/src/views/admin/"
-            .replaceAll("\\W", "\\" + FILE_SEPARATOR);
-    static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
+            .replaceAll("/", "\\" + FILE_SEPARATOR);
+    static String generatorConfigPath = "server/src/main/resources/generator/generatorConfig.xml"
+            .replaceAll("/", "\\" + FILE_SEPARATOR);
 
 
     public static void main(String[] args) throws Exception {

@@ -26,7 +26,7 @@
       <tbody>
       <tr v-for="${domain} in ${domain}s" :key="${domain}.id">
           <#list fieldList as field>
-              <th>{{ ${domain}.${field.nameHump}</th>
+              <th>{{ ${domain}.${field.nameHump} }}</th>
           </#list>
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->

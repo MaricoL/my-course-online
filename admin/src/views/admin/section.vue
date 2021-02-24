@@ -34,16 +34,16 @@
 
       <tbody>
       <tr v-for="section in sections" :key="section.id">
-        <th>{{ section.id</th>
-        <th>{{ section.title</th>
-        <th>{{ section.courseId</th>
-        <th>{{ section.chapterId</th>
-        <th>{{ section.video</th>
-        <th>{{ section.time</th>
-        <th>{{ section.charge</th>
-        <th>{{ section.sort</th>
-        <th>{{ section.createdAt</th>
-        <th>{{ section.updatedAt</th>
+              <th>{{ section.id }}</th>
+              <th>{{ section.title }}</th>
+              <th>{{ section.courseId }}</th>
+              <th>{{ section.chapterId }}</th>
+              <th>{{ section.video }}</th>
+              <th>{{ section.time }}</th>
+              <th>{{ section.charge }}</th>
+              <th>{{ section.sort }}</th>
+              <th>{{ section.createdAt }}</th>
+              <th>{{ section.updatedAt }}</th>
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->
           <div class="hidden-sm hidden-xs btn-group">
@@ -102,66 +102,66 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">ID</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="ID" v-model="section.id">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">标题</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="标题" v-model="section.title">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">课程</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="课程" v-model="section.courseId">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">大章</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="大章" v-model="section.chapterId">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">视频</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="视频" v-model="section.video">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">时长</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="时长" v-model="section.time">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">收费</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="收费" v-model="section.charge">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">顺序</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="顺序" v-model="section.sort">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">创建时间</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="创建时间" v-model="section.createdAt">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">修改时间</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="修改时间" v-model="section.updatedAt">
-                </div>
-              </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="ID" v-model="section.id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="标题" v-model="section.title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">课程</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="课程" v-model="section.courseId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">大章</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="大章" v-model="section.chapterId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">视频</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="视频" v-model="section.video">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">时长</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="时长" v-model="section.time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">收费</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="收费" v-model="section.charge">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">顺序</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="顺序" v-model="section.sort">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">创建时间</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="创建时间" v-model="section.createdAt">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">修改时间</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="修改时间" v-model="section.updatedAt">
+                        </div>
+                    </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -241,7 +241,7 @@ export default {
           $('.modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
-        } else {
+        }else{
           Toast.warning(responseDto.message);
         }
 
