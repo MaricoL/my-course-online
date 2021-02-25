@@ -34,6 +34,13 @@
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
         </dependency>
+
+        <!-- Server模块 -->
+        <dependency>
+            <groupId>com.course</groupId>
+            <artifactId>server</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -175,13 +175,15 @@ export default {
     Pagination
   },
   filters: {
-    chargeFilter: Filter.optionKV
+    // chargeFilter: Filter.optionKV
+    chargeFilter: Filter.optionObj
   },
   data() {
     return {
       section: {},
       sections: [],
-      CHARGE: Enum.CHARGE
+      // CHARGE: Enum.CHARGE
+      CHARGE: Enum.SECTION_CHARGE
     }
   },
   mounted() {
