@@ -47,11 +47,13 @@ public class ${Domain}Controller {
  */
         // 保存校验
         <#list fieldList as field>
-          <#if !field.nullable>
-            ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}");
-          </#if>
-          <#if (field.length > 0)>
-            ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}", 1, ${field.length});
+          <#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt" && field.nameHump != "sort">
+              <#if !field.nullable>
+        ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}");
+              </#if>
+              <#if (field.length > 0)>
+        ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}", 1, ${field.length});
+              </#if>
           </#if>
         </#list>
         ${domain}Service.save(${domain}Dto);

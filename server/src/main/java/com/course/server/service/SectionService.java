@@ -15,6 +15,8 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.List;
 
+import java.util.Date;
+
 @Service
 public class SectionService {
 
@@ -26,8 +28,9 @@ public class SectionService {
         // 对应SQL：limit 2 - 1 ， 5
 //        PageHelper.startPage(2, 5);
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
-        SectionExample example = new SectionExample();
-        List<Section> sectionList = sectionMapper.selectByExample(example);
+        SectionExample sectionexample = new SectionExample();
+        sectionexample.setOrderByClause("sort asc");
+        List<Section> sectionList = sectionMapper.selectByExample(sectionexample);
 
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
         pageDto.setTotal(pageInfo.getTotal());
@@ -50,6 +53,8 @@ public class SectionService {
 
     // 新增
     private void insert(Section section) {
+        section.setCreatedAt(new Date());
+        section.setUpdatedAt(new Date());
         // 设置 短型UUID
         section.setId(UuidUtil.getShortUuid());
         sectionMapper.insert(section);
@@ -57,6 +62,7 @@ public class SectionService {
 
     // 更新
     private void update(Section section) {
+        section.setUpdatedAt(new Date());
         sectionMapper.updateByPrimaryKey(section);
     }
 

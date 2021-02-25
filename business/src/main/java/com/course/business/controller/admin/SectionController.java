@@ -46,9 +46,9 @@ public class SectionController {
  *下面的异常处理非常局限，使用{@link com.course.business.controller.ControllerExceptionHandler}统一处理异常
  */
         // 保存校验
-            ValidatorUtil.require(sectionDto.getTitle(), "标题");
-            ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
-            ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
+        ValidatorUtil.require(sectionDto.getTitle(), "标题");
+        ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
         sectionService.save(sectionDto);
         responseDto.setContent(sectionDto);
         return responseDto;

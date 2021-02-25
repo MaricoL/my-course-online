@@ -18,7 +18,8 @@
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr><#list fieldList as field>
-        <th>${field.nameCn}</th></#list>
+          <#if field.nameHump != "createAt" && field.nameHump != "updateAt"><th>${field.nameCn}</th></#if>
+        </#list>
         <th>操作</th>
       </tr>
       </thead>
@@ -26,7 +27,9 @@
       <tbody>
       <tr v-for="${domain} in ${domain}s" :key="${domain}.id">
           <#list fieldList as field>
+            <#if field.nameHump != "createAt" && field.nameHump != "updateAt">
               <th>{{ ${domain}.${field.nameHump} }}</th>
+            </#if>
           </#list>
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->
@@ -87,12 +90,14 @@
           <div class="modal-body">
             <form class="form-horizontal">
                 <#list fieldList as field>
+                  <#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">${field.nameCn}</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" placeholder="${field.nameCn}" v-model="${domain}.${field.nameHump}">
                         </div>
                     </div>
+                  </#if>
                 </#list>
             </form>
           </div>
@@ -159,15 +164,16 @@ export default {
     save() {
       let _this = this;
       // 保存校验
-
         if(1 != 1
         <#list fieldList as field>
+          <#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt" && field.nameHump != "sort">
             <#if !field.nullable>
               || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameCn}")
             </#if>
             <#if (field.length > 0)>
               || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length})
             </#if>
+          </#if>
         </#list>
         ){
         return;
@@ -222,7 +228,6 @@ export default {
         const responseDto = response.data;
         _this.${domain}s = responseDto.content.list;
         _this.$refs.pagination.render(page, responseDto.content.total);
-
       })
     }
 
