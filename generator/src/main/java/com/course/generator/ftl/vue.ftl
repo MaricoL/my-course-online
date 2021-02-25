@@ -18,8 +18,7 @@
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr><#list fieldList as field>
-          <#if field.nameHump != "createAt" && field.nameHump != "updateAt"><th>${field.nameCn}</th></#if>
-        </#list>
+        <#if field.nameHump != "createAt" && field.nameHump != "updateAt"><th>${field.nameCn}</th></#if></#list>
         <th>操作</th>
       </tr>
       </thead>
