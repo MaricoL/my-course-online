@@ -121,7 +121,7 @@ import Confirm from '../../../public/static/js/Confirm'
 import Validator from '../../../public/static/js/Validator'
 
 export default {
-  name: "${domain}",
+  name: "${MODULE}-${domain}",
   components: {
     Pagination
   },

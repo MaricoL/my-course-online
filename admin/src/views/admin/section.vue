@@ -34,16 +34,16 @@
 
       <tbody>
       <tr v-for="section in sections" :key="section.id">
-        <th>{{ section.id }}</th>
-        <th>{{ section.title }}</th>
-        <th>{{ section.courseId }}</th>
-        <th>{{ section.chapterId }}</th>
-        <th>{{ section.video }}</th>
-        <th>{{ section.time }}</th>
-        <th>{{ CHARGE | chargeFilter(section.charge)}}</th>
-        <th>{{ section.sort }}</th>
-        <th>{{ section.createdAt }}</th>
-        <th>{{ section.updatedAt }}</th>
+              <th>{{ section.id }}</th>
+              <th>{{ section.title }}</th>
+              <th>{{ section.courseId }}</th>
+              <th>{{ section.chapterId }}</th>
+              <th>{{ section.video }}</th>
+              <th>{{ section.time }}</th>
+              <th>{{ section.charge }}</th>
+              <th>{{ section.sort }}</th>
+              <th>{{ section.createdAt }}</th>
+              <th>{{ section.updatedAt }}</th>
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->
           <div class="hidden-sm hidden-xs btn-group">
@@ -102,50 +102,48 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">标题</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="标题" v-model="section.title">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">课程</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="课程" v-model="section.courseId">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">大章</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="大章" v-model="section.chapterId">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">视频</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="视频" v-model="section.video">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">时长</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="时长" v-model="section.time">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">收费</label>
-                <div class="col-sm-10">
-                  <select class="form-control" v-model="section.charge">
-                    <option v-for="chargeObj in CHARGE" :value="chargeObj.key">{{ chargeObj.value}}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">顺序</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="顺序" v-model="section.sort">
-                </div>
-              </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="标题" v-model="section.title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">课程</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="课程" v-model="section.courseId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">大章</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="大章" v-model="section.chapterId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">视频</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="视频" v-model="section.video">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">时长</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="时长" v-model="section.time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">收费</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="收费" v-model="section.charge">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">顺序</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="顺序" v-model="section.sort">
+                        </div>
+                    </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -162,28 +160,21 @@
 
 <script>
 import Pagination from "../../components/pagination";
+import Swal from 'sweetalert2'
 import Toast from '../../../public/static/js/Toast'
 import Loading from '../../../public/static/js/Loading'
 import Confirm from '../../../public/static/js/Confirm'
 import Validator from '../../../public/static/js/Validator'
-import Filter from "../../../public/static/filter/Filter";
-import Enum from "../../../public/static/js/Enum";
 
 export default {
-  name: "section",
+  name: "business-section",
   components: {
     Pagination
-  },
-  filters: {
-    // chargeFilter: Filter.optionKV
-    chargeFilter: Filter.optionObj
   },
   data() {
     return {
       section: {},
-      sections: [],
-      // CHARGE: Enum.CHARGE
-      CHARGE: Enum.SECTION_CHARGE
+      sections: []
     }
   },
   mounted() {
@@ -218,11 +209,11 @@ export default {
     save() {
       let _this = this;
       // 保存校验
-      if (1 != 1
-          || !Validator.require(_this.section.title, "标题")
-          || !Validator.length(_this.section.title, "标题", 1, 50)
-          || !Validator.length(_this.section.video, "视频", 1, 200)
-      ) {
+        if(1 != 1
+              || !Validator.require(_this.section.title, "标题")
+              || !Validator.length(_this.section.title, "标题", 1, 50)
+              || !Validator.length(_this.section.video, "视频", 1, 200)
+        ){
         return;
       }
       Loading.show();
@@ -238,7 +229,7 @@ export default {
           $('.modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
-        } else {
+        }else{
           Toast.warning(responseDto.message);
         }
 
