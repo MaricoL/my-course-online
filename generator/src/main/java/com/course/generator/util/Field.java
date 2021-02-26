@@ -11,6 +11,8 @@ public class Field {
     private String comment; // 注释：课程|ID
     private Boolean nullable; // 是否可以为空：YES/NO
     private Integer length; // 字段长度：8
+    private Boolean enums; // 是否为枚举 true/false
+    private String enumsConst; // 枚举常量 COURSE_LEVEL
 
     public String getName() {
         return name;
@@ -84,6 +86,22 @@ public class Field {
         this.length = length;
     }
 
+    public Boolean getEnums() {
+        return enums;
+    }
+
+    public void setEnums(Boolean enums) {
+        this.enums = enums;
+    }
+
+    public String getEnumsConst() {
+        return enumsConst;
+    }
+
+    public void setEnumsConst(String enumsConst) {
+        this.enumsConst = enumsConst;
+    }
+
     @Override
     public String toString() {
         return "Field{" +
@@ -96,6 +114,8 @@ public class Field {
                 ", comment='" + comment + '\'' +
                 ", nullable=" + nullable +
                 ", length=" + length +
+                ", enums=" + enums +
+                ", enumsConst='" + enumsConst + '\'' +
                 '}';
     }
 }

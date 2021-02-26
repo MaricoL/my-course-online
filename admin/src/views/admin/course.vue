@@ -43,9 +43,9 @@
               <td>{{ course.time }}</td>
               <td>{{ course.price }}</td>
               <td>{{ course.image }}</td>
-              <td>{{ LEVEL | optionObj(course.level) }}</td>
-              <td>{{ CHARGE | optionObj(course.charge) }}</td>
-              <td>{{ STATUS | optionObj(course.status) }}</td>
+              <td>{{ COURSE_LEVEL | optionObj(course.level) }}</td>
+              <td>{{ COURSE_CHARGE | optionObj(course.charge) }}</td>
+              <td>{{ COURSE_STATUS | optionObj(course.status) }}</td>
               <td>{{ course.enroll }}</td>
               <td>{{ course.sort }}</td>
               <td>{{ course.createdAt }}</td>
@@ -111,67 +111,67 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="名称" v-model="course.name">
+                          <input type="text" class="form-control" placeholder="名称" v-model="course.name">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">概述</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="概述" v-model="course.summary">
+                          <input type="text" class="form-control" placeholder="概述" v-model="course.summary">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">时长</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="时长" v-model="course.time">
+                          <input type="text" class="form-control" placeholder="时长" v-model="course.time">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">价格（元）</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="价格（元）" v-model="course.price">
+                          <input type="text" class="form-control" placeholder="价格（元）" v-model="course.price">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">封面</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="封面" v-model="course.image">
+                          <input type="text" class="form-control" placeholder="封面" v-model="course.image">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">级别</label>
                         <div class="col-sm-10">
-                          <select class="form-control" v-model="course.level">
-                            <option v-for="levelObj in LEVEL" :value="levelObj.key">{{ levelObj.value}}</option>
-                          </select>
+                            <select class="form-control" v-model="course.level">
+                              <option v-for="COURSE_LEVELObj in COURSE_LEVEL" :value="COURSE_LEVELObj.key">{{ COURSE_LEVELObj.value}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">收费</label>
                         <div class="col-sm-10">
-                          <select class="form-control" v-model="course.charge">
-                            <option v-for="chargeObj in CHARGE" :value="chargeObj.key">{{ chargeObj.value}}</option>
-                          </select>
+                            <select class="form-control" v-model="course.charge">
+                              <option v-for="COURSE_CHARGEObj in COURSE_CHARGE" :value="COURSE_CHARGEObj.key">{{ COURSE_CHARGEObj.value}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">状态</label>
                         <div class="col-sm-10">
-                          <select class="form-control" v-model="course.status">
-                            <option v-for="statusObj in STATUS" :value="statusObj.key">{{ statusObj.value}}</option>
-                          </select>
+                            <select class="form-control" v-model="course.status">
+                              <option v-for="COURSE_STATUSObj in COURSE_STATUS" :value="COURSE_STATUSObj.key">{{ COURSE_STATUSObj.value}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">报名数</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="报名数" v-model="course.enroll">
+                          <input type="text" class="form-control" placeholder="报名数" v-model="course.enroll">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">顺序</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="顺序" v-model="course.sort">
+                          <input type="text" class="form-control" placeholder="顺序" v-model="course.sort">
                         </div>
                     </div>
             </form>
@@ -210,9 +210,9 @@ export default {
     return {
       course: {},
       courses: [],
-      LEVEL: Enum.COURSE_LEVEL,
-      CHARGE: Enum.COURSE_CHARGE,
-      STATUS: Enum.COURSE_STATE
+      COURSE_LEVEL: Enum.COURSE_LEVEL,
+      COURSE_CHARGE: Enum.COURSE_CHARGE,
+      COURSE_STATUS: Enum.COURSE_STATUS,
     }
   },
   mounted() {

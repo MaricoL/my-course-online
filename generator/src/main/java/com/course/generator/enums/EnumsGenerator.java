@@ -13,6 +13,9 @@ import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 生成 Enums.js 文件
+ */
 public class EnumsGenerator {
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
     private static final String toEnumJsPath = "admin/public/static/js/Enum.js"
@@ -97,7 +100,7 @@ public class EnumsGenerator {
 
     }
 
-    private static String toUnderline(String className) {
+    public static String toUnderline(String className) {
         String result = underline(className);
         // 将 _section_charge_enum 转换成 SECTION_CHARGE
         return result.substring(1).replace("_enum", "").toUpperCase();
