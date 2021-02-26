@@ -404,7 +404,7 @@
           <li class="active open">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
-              <span class="menu-text"> 系统管理 </span>
+              <span class="menu-text"> 业务管理 </span>
 
               <b class="arrow fa fa-angle-down"></b>
             </a>
@@ -412,6 +412,14 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
+              <li class="active" id="business-course-sidebar">
+                <router-link to="/business/course">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  课程管理
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
               <li class="active" id="business-chapter-sidebar">
                 <router-link to="/business/chapter">
                   <i class="menu-icon fa fa-caret-right"></i>
@@ -420,7 +428,7 @@
 
                 <b class="arrow"></b>
               </li>
-              <li class="" id="business-section-sidebar">
+              <li class="active" id="business-section-sidebar">
                 <router-link to="/business/section">
                   <i class="menu-icon fa fa-caret-right"></i>
                   小节管理
@@ -496,10 +504,14 @@ export default {
   mounted() {
     $('body').removeClass('login-layout light-login');
     $('body').addClass('no-skin');
+    let _this = this;
+    _this.activeSideBar(_this.$route.name.replace('/', '-') + '-sidebar');
   },
   watch: {
     // 激活样式方法二：
     // 监听路由是否发生变化
+    // 注意：此方法只有进到admin页面中，点击admin页面中的菜单栏时才会被监听到，也就时监听子组件路由
+    // 从login页面跳转到admin页面不会被监听到路由变化
     $route: {
       handler(oldRoute,newRoute) {
         console.log(`路由发生变化：${oldRoute.path} => ${newRoute.path}`);
@@ -523,8 +535,8 @@ export default {
       // 对于一级菜单，去掉父菜单的兄弟菜单样式，父菜单添加active open样式
       const parentLi = sideBar.parents("li");
       if(parentLi) {
-        parentLi.siblings().removeClass('active open');
-        parentLi.addClass('active open');
+        parentLi.siblings().removeClass('open active');
+        parentLi.addClass('open active');
       }
 
     }

@@ -18,13 +18,16 @@
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr>
-        <th>ID</th>
-        <th>标题</th>
-        <th>课程</th>
-        <th>大章</th>
-        <th>视频</th>
+        <th>id</th>
+        <th>名称</th>
+        <th>概述</th>
         <th>时长</th>
+        <th>价格（元）</th>
+        <th>封面</th>
+        <th>级别</th>
         <th>收费</th>
+        <th>状态</th>
+        <th>报名数</th>
         <th>顺序</th>
         <th>创建时间</th>
         <th>修改时间</th>
@@ -33,25 +36,28 @@
       </thead>
 
       <tbody>
-      <tr v-for="section in sections" :key="section.id">
-              <td>{{ section.id }}</td>
-              <td>{{ section.title }}</td>
-              <td>{{ section.courseId }}</td>
-              <td>{{ section.chapterId }}</td>
-              <td>{{ section.video }}</td>
-              <td>{{ section.time }}</td>
-              <td>{{ CHARGE | chargeFilter(section.charge)}}</td>
-              <td>{{ section.sort }}</td>
-              <td>{{ section.createdAt }}</td>
-              <td>{{ section.updatedAt }}</td>
+      <tr v-for="course in courses" :key="course.id">
+              <td>{{ course.id }}</td>
+              <td>{{ course.name }}</td>
+              <td>{{ course.summary }}</td>
+              <td>{{ course.time }}</td>
+              <td>{{ course.price }}</td>
+              <td>{{ course.image }}</td>
+              <td>{{ LEVEL | optionObj(course.level) }}</td>
+              <td>{{ CHARGE | optionObj(course.charge) }}</td>
+              <td>{{ STATUS | optionObj(course.status) }}</td>
+              <td>{{ course.enroll }}</td>
+              <td>{{ course.sort }}</td>
+              <td>{{ course.createdAt }}</td>
+              <td>{{ course.updatedAt }}</td>
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-info" @click="edit(section)">
+            <button class="btn btn-xs btn-info" @click="edit(course)">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
 
-            <button class="btn btn-xs btn-danger" @click="del(section.id)">
+            <button class="btn btn-xs btn-danger" @click="del(course.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
 
@@ -103,47 +109,69 @@
           <div class="modal-body">
             <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">标题</label>
+                        <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="标题" v-model="section.title">
+                            <input type="text" class="form-control" placeholder="名称" v-model="course.name">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">课程</label>
+                        <label class="col-sm-2 control-label">概述</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="课程" v-model="section.courseId">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">大章</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="大章" v-model="section.chapterId">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">视频</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="视频" v-model="section.video">
+                            <input type="text" class="form-control" placeholder="概述" v-model="course.summary">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">时长</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="时长" v-model="section.time">
+                            <input type="text" class="form-control" placeholder="时长" v-model="course.time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">价格（元）</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="价格（元）" v-model="course.price">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">封面</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="封面" v-model="course.image">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">级别</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" v-model="course.level">
+                            <option v-for="levelObj in LEVEL" :value="levelObj.key">{{ levelObj.value}}</option>
+                          </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">收费</label>
                         <div class="col-sm-10">
-                          <select class="form-control" v-model="section.charge">
+                          <select class="form-control" v-model="course.charge">
                             <option v-for="chargeObj in CHARGE" :value="chargeObj.key">{{ chargeObj.value}}</option>
                           </select>
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">状态</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" v-model="course.status">
+                            <option v-for="statusObj in STATUS" :value="statusObj.key">{{ statusObj.value}}</option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">报名数</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="报名数" v-model="course.enroll">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">顺序</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="顺序" v-model="section.sort">
+                            <input type="text" class="form-control" placeholder="顺序" v-model="course.sort">
                         </div>
                     </div>
             </form>
@@ -171,19 +199,20 @@ import Filter from "../../../public/static/filter/Filter";
 import Enum from "../../../public/static/js/Enum";
 
 export default {
-  name: "business-section",
+  name: "business-course",
   components: {
     Pagination
   },
   filters: {
-    // chargeFilter: Filter.optionKV
-    chargeFilter: Filter.optionObj
+    optionObj: Filter.optionObj
   },
   data() {
     return {
-      section: {},
-      sections: [],
-      CHARGE: Enum.SECTION_CHARGE
+      course: {},
+      courses: [],
+      LEVEL: Enum.COURSE_LEVEL,
+      CHARGE: Enum.COURSE_CHARGE,
+      STATUS: Enum.COURSE_STATE
     }
   },
   mounted() {
@@ -193,7 +222,7 @@ export default {
     _this.list(1);
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
-    // this.$parent.activeSideBar('business-section-sidebar');
+    // this.$parent.activeSideBar('business-course-sidebar');
     // this.list();
   },
   methods: {
@@ -201,39 +230,40 @@ export default {
       // $('.modal').modal('show');
       let _this = this;
       // 清空模态框中的文字
-      _this.section = {};
+      _this.course = {};
       $('.modal').modal({
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
       });
     },
-    edit(section) {
+    edit(course) {
       let _this = this;
-      // _this.section = section 会在修改模态框中的字段时，自动修改背后数据表格的值
-      // _this.section = section;
-      // _this.section = $.extend({}, section);
-      _this.section = Object.assign({}, section);
+      // _this.course = course 会在修改模态框中的字段时，自动修改背后数据表格的值
+      // _this.course = course;
+      // _this.course = $.extend({}, course);
+      _this.course = Object.assign({}, course);
       $('.modal').modal('show');
     },
     save() {
       let _this = this;
       // 保存校验
         if(1 != 1
-              || !Validator.require(_this.section.title, "标题")
-              || !Validator.length(_this.section.title, "标题", 1, 50)
-              || !Validator.length(_this.section.video, "视频", 1, 200)
+              || !Validator.require(_this.course.name, "名称")
+              || !Validator.length(_this.course.name, "名称", 1, 50)
+              || !Validator.length(_this.course.summary, "概述", 1, 2000)
+              || !Validator.length(_this.course.image, "封面", 1, 100)
         ){
         return;
       }
       Loading.show();
-      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/section/save`,
-          _this.section
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/save`,
+          _this.course
       ).then((response) => {
         Loading.hide();
         const responseDto = response.data;
         if (responseDto.success) {
           Toast.success("保存成功！");
-          // console.log("新增小节列表结果：", responseDto.content);
+          // console.log("新增课程列表结果：", responseDto.content);
           // 关闭模态框
           $('.modal').modal('hide');
           // 刷新表格数据
@@ -246,12 +276,12 @@ export default {
     },
     del(id) {
       let _this = this;
-      Confirm.show("删除小节后不可恢复，确认删除?", () => {
+      Confirm.show("删除课程后不可恢复，确认删除?", () => {
         // loading框
         Loading.show();
-        _this.$ajax.delete(`${process.env.VUE_APP_SERVER}/business/admin/section/delete/${id}`)
+        _this.$ajax.delete(`${process.env.VUE_APP_SERVER}/business/admin/course/delete/${id}`)
             .then(response => {
-              // console.log("删除小节列表结果：", response);
+              // console.log("删除课程列表结果：", response);
               let responseDto = response.data;
               if (responseDto.success) {
                 Loading.hide();
@@ -267,29 +297,29 @@ export default {
       console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
 
       let _this = this;
-      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/section/list`, {
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/list`, {
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response) => {
-        // console.log("查询小节列表结果：", response);
+        // console.log("查询课程列表结果：", response);
         const responseDto = response.data;
-        _this.sections = responseDto.content.list;
+        _this.courses = responseDto.content.list;
         _this.$refs.pagination.render(page, responseDto.content.total);
       })
     }
 
     // list() {
     //   const _this = this;
-    //   // _this.$ajax.get('http://localhost:9000/business/admin/section/list')
+    //   // _this.$ajax.get('http://localhost:9000/business/admin/course/list')
     //   // jquery ajax 默认是表单的方式 ，axios ajax 默认是以JSON的方式
-    //   // 在这里需要在 SectionController 所对应的 list() 方法行参上加上 @RequestBody 注解
-    //   _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/section/list`, {
+    //   // 在这里需要在 CourseController 所对应的 list() 方法行参上加上 @RequestBody 注解
+    //   _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/list`, {
     //     page: 2,
     //     size: 5
     //   })
     //       .then(response => {
     //         // console.log(response);
-    //         _this.sections = response.data.list;
+    //         _this.courses = response.data.list;
     //       })
     // }
   }

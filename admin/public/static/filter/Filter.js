@@ -7,7 +7,7 @@ const optionKV = (list, key) => {
 const optionObj = (obj, key) => {
     if (!obj || !key) return;
     const [o] = Object.values(obj).filter(item => item.key === key);
-    return o.value;
+    return o?.value;
 }
 
 export default {

@@ -1,15 +1,21 @@
 package com.course.generator.enums;
 
+import com.course.server.enums.CourseChargeEnum;
+import com.course.server.enums.CourseLevelEnum;
+import com.course.server.enums.CourseStatusEnum;
 import com.course.server.enums.SectionChargeEnum;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EnumsGenerator {
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
-    private static final String toEnumJsPath = "admin/public/static/js/Enum1.js"
+    private static final String toEnumJsPath = "admin/public/static/js/Enum.js"
             .replaceAll("/", "\\" + FILE_SEPARATOR);
 
     public static void main(String[] args) {
@@ -20,6 +26,9 @@ public class EnumsGenerator {
         try {
             // 转成 JSON 格式的字符串
             toJsonString(SectionChargeEnum.class, arrayJsStr, objectJsStr);
+            toJsonString(CourseLevelEnum.class, arrayJsStr, objectJsStr);
+            toJsonString(CourseChargeEnum.class, arrayJsStr, objectJsStr);
+            toJsonString(CourseStatusEnum.class, arrayJsStr, objectJsStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,6 +42,9 @@ public class EnumsGenerator {
 
     private static void writeJS(String toEnumJsPath, StringBuffer buffer) {
         try {
+            buffer = new StringBuffer("export default {").append(System.lineSeparator())
+                    .append(buffer)
+                    .append("}");
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(toEnumJsPath)));
             writer.write(buffer.toString());
             writer.close();
@@ -54,7 +66,7 @@ public class EnumsGenerator {
 
         // 生成数组
         arrayJsStr.append(key).append("_ARRAY")
-                .append("=[");
+                .append(":[");
         for (Object enumConstant : enumConstants) {
             arrayJsStr
                     .append("{key:\"")
@@ -65,10 +77,11 @@ public class EnumsGenerator {
         }
         // 去除末尾的逗号
         arrayJsStr.deleteCharAt(arrayJsStr.length() - 1);
-        arrayJsStr.append("];");
+        arrayJsStr.append("],");
+        arrayJsStr.append(System.lineSeparator());
 
         // 生成对象
-        objectJsStr.append(key).append("={");
+        objectJsStr.append(key).append(":{");
         for (Object enumConstant : enumConstants) {
             objectJsStr
                     .append(name.invoke(enumConstant))
@@ -79,7 +92,9 @@ public class EnumsGenerator {
                     .append("\"},");
         }
         objectJsStr.deleteCharAt(objectJsStr.length() - 1);
-        objectJsStr.append("};");
+        objectJsStr.append("},");
+        objectJsStr.append(System.lineSeparator());
+
     }
 
     private static String toUnderline(String className) {

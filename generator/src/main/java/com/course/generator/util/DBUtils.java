@@ -49,11 +49,11 @@ public class DBUtils {
         return tableNameCn;
     }
 
-    public static List<Field> getColumnByTableName(String domain) throws Exception {
+    public static List<Field> getColumnByTableName(String tableName) throws Exception {
         List<Field> fieldList = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        String sql = "show full columns from courseimooc.section";
+        String sql = "show full columns from courseimooc." + tableName;
         ResultSet rs = stmt.executeQuery(sql);
         while (rs.next()) {
             String columnName = rs.getString("Field");
@@ -75,7 +75,7 @@ public class DBUtils {
         rs.close();
         stmt.close();
         conn.close();
-        System.out.println(domain + "表的列信息：" + fieldList);
+        System.out.println(tableName + "表的列信息：" + fieldList);
         return fieldList;
     }
 

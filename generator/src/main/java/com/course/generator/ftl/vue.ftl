@@ -27,7 +27,7 @@
       <tr v-for="${domain} in ${domain}s" :key="${domain}.id">
           <#list fieldList as field>
             <#if field.nameHump != "createAt" && field.nameHump != "updateAt">
-              <th>{{ ${domain}.${field.nameHump} }}</th>
+              <td>{{ ${domain}.${field.nameHump} }}</td>
             </#if>
           </#list>
         <td>
@@ -170,7 +170,7 @@ export default {
               || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameCn}")
             </#if>
             <#if (field.length > 0)>
-              || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length})
+              || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length?c})
             </#if>
           </#if>
         </#list>
