@@ -1,5 +1,7 @@
 package com.course.generator.util;
 
+import com.course.generator.enums.EnumsGenerator;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,8 @@ public class DBUtils {
             field.setComment(comment);
             field.setNullable("YES".equals(nullable));
             field.setLength(extractLength(type));
+            field.setEnums(isEnums(comment));
+            field.setEnumsConst(extractEnumsConst(comment));
             fieldList.add(field);
         }
         rs.close();
@@ -77,6 +81,21 @@ public class DBUtils {
         conn.close();
         System.out.println(tableName + "表的列信息：" + fieldList);
         return fieldList;
+    }
+
+    // 从 comment注释 中截取枚举字段名
+    private static String extractEnumsConst(String comment) {
+        if (isEnums(comment)) {
+            String enumName = comment.substring(comment.indexOf("[") + 1, comment.indexOf("]"));
+            return EnumsGenerator.toUnderline(enumName);
+        } else {
+            return null;
+        }
+    }
+
+    // 判断该字段是否有对应的枚举字段
+    private static Boolean isEnums(String comment) {
+        return comment.contains("枚举");
     }
 
     // 从 type 类型中提取长度

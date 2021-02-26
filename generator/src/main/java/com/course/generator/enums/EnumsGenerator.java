@@ -97,7 +97,7 @@ public class EnumsGenerator {
 
     }
 
-    private static String toUnderline(String className) {
+    public static String toUnderline(String className) {
         String result = underline(className);
         // 将 _section_charge_enum 转换成 SECTION_CHARGE
         return result.substring(1).replace("_enum", "").toUpperCase();

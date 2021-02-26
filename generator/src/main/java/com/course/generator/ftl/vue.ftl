@@ -27,7 +27,11 @@
       <tr v-for="${domain} in ${domain}s" :key="${domain}.id">
           <#list fieldList as field>
             <#if field.nameHump != "createAt" && field.nameHump != "updateAt">
+              <#if field.enums>
+              <td>{{ ${field.enumsConst} | optionObj(${domain}.${field.nameHump}) }}</td>
+              <#else>
               <td>{{ ${domain}.${field.nameHump} }}</td>
+              </#if>
             </#if>
           </#list>
         <td>
@@ -93,7 +97,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">${field.nameCn}</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="${field.nameCn}" v-model="${domain}.${field.nameHump}">
+                          <#if field.enums>
+                            <select class="form-control" v-model="${domain}.${field.nameHump}">
+                              <option v-for="${field.enumsConst}Obj in ${field.enumsConst}" :value="${field.enumsConst}Obj.key">{{ ${field.enumsConst}Obj.value}}</option>
+                            </select>
+                          <#else>
+                          <input type="text" class="form-control" placeholder="${field.nameCn}" v-model="${domain}.${field.nameHump}">
+                          </#if>
                         </div>
                     </div>
                   </#if>
@@ -119,16 +129,26 @@ import Toast from '../../../public/static/js/Toast'
 import Loading from '../../../public/static/js/Loading'
 import Confirm from '../../../public/static/js/Confirm'
 import Validator from '../../../public/static/js/Validator'
+import Filter from "../../../public/static/filter/Filter";
+import Enum from "../../../public/static/js/Enum";
 
 export default {
   name: "${MODULE}-${domain}",
   components: {
     Pagination
   },
+  filters: {
+    optionObj: Filter.optionObj
+  },
   data() {
     return {
       ${domain}: {},
-      ${domain}s: []
+      ${domain}s: [],
+      <#list fieldList as field>
+          <#if field.enums>
+      ${field.enumsConst}: Enum.${field.enumsConst},
+          </#if>
+      </#list>
     }
   },
   mounted() {
