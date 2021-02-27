@@ -10,6 +10,10 @@
     <hr>
 
     <p>
+      <router-link to="/business/chapter" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-refresh"></i>
+        返回
+      </router-link>
       <button @click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         新增

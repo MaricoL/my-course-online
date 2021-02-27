@@ -5,6 +5,7 @@ import com.course.server.domain.CourseExample;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.CourseMapper;
+import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
@@ -22,6 +23,9 @@ public class CourseService {
 
     @Resource
     private CourseMapper courseMapper;
+
+    @Resource
+    private MyCourseMapper myCourseMapper;
 
     public void list(PageDto<CourseDto> pageDto){
         // 分页插件：获取第2页数据，每页5条
@@ -69,5 +73,10 @@ public class CourseService {
     // 删除
     public void delete(String courseId) {
         courseMapper.deleteByPrimaryKey(courseId);
+    }
+
+    // 跟新课程总时长
+    public void updateTime(String courseId) {
+        myCourseMapper.updateTime(courseId);
     }
 }

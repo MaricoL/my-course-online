@@ -5,12 +5,15 @@ import com.course.server.domain.SectionExample;
 import com.course.server.dto.SectionDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.SectionPageDto;
+import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.SectionMapper;
+import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -23,6 +26,9 @@ public class SectionService {
 
     @Resource
     private SectionMapper sectionMapper;
+
+    @Resource
+    private CourseService courseService;
 
     public void list(SectionPageDto<SectionDto> sectionPageDto) {
         // 分页插件：获取第2页数据，每页5条
@@ -49,6 +55,7 @@ public class SectionService {
     }
 
     // 新增/更新
+    @Transactional
     public void save(SectionDto sectionDto) {
         Section section = CopyUtil.copy(sectionDto, Section.class);
         // StringUtils.isEmpty() 已被弃用
@@ -57,6 +64,13 @@ public class SectionService {
         } else {
             insert(section);
         }
+        // 只有抛出 RuntimeException 的异常，才可以Spring事物管理
+        // Exception 的异常，Spring事物失效
+//        if (true) {
+//            throw new RuntimeException("更新课时");
+//        }
+        // 更新课程时长
+        courseService.updateTime(sectionDto.getCourseId());
     }
 
     // 新增
