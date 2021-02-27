@@ -1,4 +1,4 @@
-export default {
+Loading = {
     show() {
         $.blockUI({
             message: `<img src="/static/image/loading.gif"/>`,
@@ -21,3 +21,5 @@ export default {
         $.unblockUI();
     }
 }
+
+// export default Loading

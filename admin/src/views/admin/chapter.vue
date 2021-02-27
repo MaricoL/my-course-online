@@ -1,11 +1,15 @@
 <template>
   <div>
+    <h1>{{ course.name }}</h1>
     <p>
+      <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-refresh"></i>
+        返回
+      </router-link>&nbsp;
       <button @click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         新增
-      </button>
-      &nbsp;
+      </button>&nbsp;
       <button @click="list(1)" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh"></i>
         刷新
@@ -95,9 +99,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">课程ID</label>
+                <label class="col-sm-2 control-label">所属课程</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="课程ID" v-model="chapter.courseId">
+                  <p class="form-control-static">{{ course.name }}</p>
                 </div>
               </div>
             </form>
@@ -116,11 +120,6 @@
 
 <script>
 import Pagination from "../../components/pagination";
-import Swal from 'sweetalert2'
-import Toast from '../../../public/static/js/Toast'
-import Loading from '../../../public/static/js/Loading'
-import Confirm from '../../../public/static/js/Confirm'
-import Validator from '../../../public/static/js/Validator'
 
 export default {
   name: "chapter",
@@ -130,11 +129,20 @@ export default {
   data() {
     return {
       chapter: {},
-      chapters: []
+      chapters: [],
+      course: {}
     }
   },
   mounted() {
     let _this = this;
+
+    let course = SessionStorage.get("course");
+    if (Tool.isEmpty(course)) {
+      _this.$router.push("/welcome");
+    } else {
+      _this.course = course;
+    }
+
     // 每页 5 条数据
     _this.$refs.pagination.size = 5;
     _this.list(1);
@@ -170,11 +178,10 @@ export default {
       //     !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
       //   return;
       // }
-      Loading.show();
+      _this.chapter.courseId = _this.course.id;
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/chapter/save`,
           _this.chapter
       ).then((response) => {
-        Loading.hide();
         const responseDto = response.data;
         if (responseDto.success) {
           Toast.success("保存成功！");
@@ -192,14 +199,11 @@ export default {
     del(id) {
       let _this = this;
       Confirm.show("删除大章后不可恢复，确认删除?", () => {
-        // loading框
-        Loading.show();
         _this.$ajax.delete(`${process.env.VUE_APP_SERVER}/business/admin/chapter/delete/${id}`)
             .then(response => {
               // console.log("删除大章列表结果：", response);
               let responseDto = response.data;
               if (responseDto.success) {
-                Loading.hide();
                 // 刷新表格数据
                 _this.list(1);
                 Toast.success("删除成功！");
@@ -215,6 +219,7 @@ export default {
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/chapter/list`, {
         page: page,
         size: _this.$refs.pagination.size,
+        courseId: _this.course.id
       }).then((response) => {
         // console.log("查询大章列表结果：", response);
         const responseDto = response.data;

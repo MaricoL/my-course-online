@@ -1,7 +1,4 @@
-import Tool from './Tool'
-import Toast from './Toast'
-
-export default {
+Validator = {
     // 判断value值是否为空
     require(value, text) {
         if (Tool.isEmpty(value)) {
@@ -25,3 +22,5 @@ export default {
     }
 
 };
+
+// export default Validator;

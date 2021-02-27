@@ -1,6 +1,4 @@
-import Swal from "sweetalert2";
-
-export default {
+Confirm = {
     show(message,callback) {
         Swal.fire({
             title: message,
@@ -18,3 +16,5 @@ export default {
         })
     }
 }
+
+// export default Confirm

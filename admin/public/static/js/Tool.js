@@ -1,4 +1,4 @@
-export default {
+Tool =  {
     isEmpty(obj) {
         if (typeof obj === 'string') {
             return !obj || obj.replace(/\s+/g, '') === '';
@@ -14,3 +14,5 @@ export default {
         return $.trim(str).length >= min && $.trim(str).length <= max;
     },
 }
+
+// export default Tool;

@@ -12,6 +12,7 @@ Vue.prototype.$ajax = axios
  */
 
 axios.interceptors.request.use(request => {
+  Loading.show();
   console.log(`请求：`,request);
   return request;
 }, error => {
@@ -19,6 +20,7 @@ axios.interceptors.request.use(request => {
 
 axios.interceptors.response.use(response => {
   console.log(`返回响应：`,response);
+  Loading.hide();
   return response;
 }, error => {
 });

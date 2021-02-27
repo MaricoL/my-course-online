@@ -46,6 +46,10 @@
               <span class="badge badge-info">时长：{{ course.time }}</span>&nbsp;
             </p>
             <p>
+              <button class="btn btn-white btn-xs btn-success btn-round" @click="toChapter(course)">
+                <i class="ace-icon fa fa-book green"></i>
+                大章
+              </button>&nbsp;
               <button class="btn btn-white btn-xs btn-default btn-round" @click="edit(course)">
                 <i class="ace-icon fa fa-pencil blue"></i>
                 编辑
@@ -241,13 +245,6 @@
 
 <script>
 import Pagination from "../../components/pagination";
-import Swal from 'sweetalert2'
-import Toast from '../../../public/static/js/Toast'
-import Loading from '../../../public/static/js/Loading'
-import Confirm from '../../../public/static/js/Confirm'
-import Validator from '../../../public/static/js/Validator'
-import Filter from "../../../public/static/filter/Filter";
-import Enum from "../../../public/static/js/Enum";
 
 export default {
   name: "business-course",
@@ -261,9 +258,9 @@ export default {
     return {
       course: {},
       courses: [],
-      COURSE_LEVEL: Enum.COURSE_LEVEL,
-      COURSE_CHARGE: Enum.COURSE_CHARGE,
-      COURSE_STATUS: Enum.COURSE_STATUS,
+      COURSE_LEVEL,
+      COURSE_CHARGE,
+      COURSE_STATUS,
     }
   },
   mounted() {
@@ -306,11 +303,9 @@ export default {
       ) {
         return;
       }
-      Loading.show();
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/save`,
           _this.course
       ).then((response) => {
-        Loading.hide();
         const responseDto = response.data;
         if (responseDto.success) {
           Toast.success("保存成功！");
@@ -328,14 +323,11 @@ export default {
     del(id) {
       let _this = this;
       Confirm.show("删除课程后不可恢复，确认删除?", () => {
-        // loading框
-        Loading.show();
         _this.$ajax.delete(`${process.env.VUE_APP_SERVER}/business/admin/course/delete/${id}`)
             .then(response => {
               // console.log("删除课程列表结果：", response);
               let responseDto = response.data;
               if (responseDto.success) {
-                Loading.hide();
                 // 刷新表格数据
                 _this.list(1);
                 Toast.success("删除成功！");
@@ -348,6 +340,7 @@ export default {
       console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
 
       let _this = this;
+
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/list`, {
         page: page,
         size: _this.$refs.pagination.size,
@@ -357,6 +350,10 @@ export default {
         _this.courses = responseDto.content.list;
         _this.$refs.pagination.render(page, responseDto.content.total);
       })
+    },
+    toChapter(course) {
+      SessionStorage.set("course", course);
+      this.$router.push("/business/chapter");
     }
 
     // list() {
@@ -378,7 +375,7 @@ export default {
 </script>
 
 <style scoped>
-  .caption h3 {
-    font-size: 30px;
-  }
+.caption h3 {
+  font-size: 30px;
+}
 </style>
