@@ -52,7 +52,7 @@
         <td>{{ section.courseId }}</td>
         <td>{{ section.chapterId }}</td>
         <td>{{ section.video }}</td>
-        <td>{{ section.time }}</td>
+        <td>{{ section.time | formatTimeFilter}}</td>
         <td>{{ CHARGE | chargeFilter(section.charge) }}</td>
         <td>{{ section.sort }}</td>
         <td>{{ section.createdAt }}</td>
@@ -183,7 +183,8 @@ export default {
   },
   filters: {
     // chargeFilter: Filter.optionKV
-    chargeFilter: Filter.optionObj
+    chargeFilter: Filter.optionObj,
+    formatTimeFilter: Filter.formatTime
   },
   data() {
     return {

@@ -43,7 +43,7 @@
             <p>
               <span class="badge badge-info">{{ course.id }}</span>&nbsp;
               <span class="badge badge-info">排序：{{ course.sort }}</span>&nbsp;
-              <span class="badge badge-info">时长：{{ course.time }}</span>&nbsp;
+              <span class="badge badge-info">时长：{{ course.time | formatTimeFilter }}</span>&nbsp;
             </p>
             <p>
               <button class="btn btn-white btn-xs btn-success btn-round" @click="toChapter(course)">
@@ -252,7 +252,8 @@ export default {
     Pagination
   },
   filters: {
-    optionObj: Filter.optionObj
+    optionObj: Filter.optionObj,
+    formatTimeFilter: Filter.formatTime
   },
   data() {
     return {
