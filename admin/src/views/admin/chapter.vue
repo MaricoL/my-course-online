@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h1>{{ course.name }}</h1>
+    <h2 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <router-link to="/business/course" data-toggle="modal" class="pink"> {{ course.name }} </router-link>
+    </h2>
+    <hr>
+    <!--    <h1>{{ course.name }}</h1>-->
     <p>
       <router-link to="/business/course" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh"></i>
@@ -37,12 +42,17 @@
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-info" @click="edit(chapter)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-
-            <button class="btn btn-xs btn-danger" @click="del(chapter.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            <button class="btn btn-white btn-xs btn-success btn-round" @click="toSection(chapter)">
+              <i class="ace-icon fa fa-book green"></i>
+              小节
+            </button>&nbsp;
+            <button class="btn btn-white btn-xs btn-default btn-round" @click="edit(course)">
+              <i class="ace-icon fa fa-pencil blue"></i>
+              编辑
+            </button>&nbsp;
+            <button class="btn btn-white btn-xs btn-warning btn-round" @click="del(course.id)">
+              <i class="ace-icon fa fa-trash-o orange"></i>
+              删除
             </button>
 
           </div>
@@ -136,7 +146,8 @@ export default {
   mounted() {
     let _this = this;
 
-    let course = SessionStorage.get("course");
+    // ||{} ：小技巧，如果course为空，则 course.id 报错，而空对象不会报错
+    let course = SessionStorage.get("course") || {};
     if (Tool.isEmpty(course)) {
       _this.$router.push("/welcome");
     } else {
@@ -227,6 +238,11 @@ export default {
         _this.$refs.pagination.render(page, responseDto.content.total);
 
       })
+    },
+
+    toSection(chapter) {
+      SessionStorage.set("chapter", chapter);
+      this.$router.push("/business/section");
     }
 
     // list() {

@@ -4,6 +4,7 @@ import com.course.server.domain.Section;
 import com.course.server.domain.SectionExample;
 import com.course.server.dto.SectionDto;
 import com.course.server.dto.PageDto;
+import com.course.server.dto.SectionPageDto;
 import com.course.server.mapper.SectionMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
@@ -23,21 +24,28 @@ public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
 
-    public void list(PageDto<SectionDto> pageDto){
+    public void list(SectionPageDto<SectionDto> sectionPageDto) {
         // 分页插件：获取第2页数据，每页5条
         // 对应SQL：limit 2 - 1 ， 5
 //        PageHelper.startPage(2, 5);
-        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+        PageHelper.startPage(sectionPageDto.getPage(), sectionPageDto.getSize());
         SectionExample sectionexample = new SectionExample();
+        SectionExample.Criteria criteria = sectionexample.createCriteria();
+        if (StringUtils.hasText(sectionPageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(sectionPageDto.getCourseId());
+        }
+        if (StringUtils.hasText(sectionPageDto.getChapterId())) {
+            criteria.andChapterIdEqualTo(sectionPageDto.getChapterId());
+        }
         sectionexample.setOrderByClause("sort asc");
         List<Section> sectionList = sectionMapper.selectByExample(sectionexample);
 
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
-        pageDto.setTotal(pageInfo.getTotal());
+        sectionPageDto.setTotal(pageInfo.getTotal());
 
         List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList, SectionDto.class);
 
-        pageDto.setList(sectionDtoList);
+        sectionPageDto.setList(sectionDtoList);
     }
 
     // 新增/更新
@@ -46,7 +54,7 @@ public class SectionService {
         // StringUtils.isEmpty() 已被弃用
         if (StringUtils.hasText(sectionDto.getId())) {
             update(section);
-        }else{
+        } else {
             insert(section);
         }
     }

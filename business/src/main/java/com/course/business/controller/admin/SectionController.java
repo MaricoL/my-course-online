@@ -1,8 +1,8 @@
 package com.course.business.controller.admin;
 
-import com.course.server.dto.SectionDto;
-import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
+import com.course.server.dto.SectionDto;
+import com.course.server.dto.SectionPageDto;
 import com.course.server.service.SectionService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -26,11 +26,14 @@ public class SectionController {
      */
     // @RequestBody：前端发送POST请求，数据为JSON格式，需要在行参上加上此注解
     @PostMapping("/list")
-    public ResponseDto<?> list(@RequestBody PageDto<SectionDto> pageDto) {
-        ResponseDto<PageDto<SectionDto>> responseDto = new ResponseDto<>();
-        LOG.info("pageDto:{}", pageDto);
-        sectionService.list(pageDto);
-        responseDto.setContent(pageDto);
+    public ResponseDto<?> list(@RequestBody SectionPageDto<SectionDto> sectionPageDto) {
+        ResponseDto<SectionPageDto<SectionDto>> responseDto = new ResponseDto<>();
+        ValidatorUtil.require(sectionPageDto.getCourseId(), "课程ID");
+        ValidatorUtil.require(sectionPageDto.getChapterId(), "大章ID");
+
+        LOG.info("sectionPageDto:{}", sectionPageDto);
+        sectionService.list(sectionPageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 
