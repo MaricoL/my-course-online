@@ -285,6 +285,10 @@ export default {
       let _this = this;
       // 清空模态框中的文字
       _this.course = {};
+      // 取消ztree中所有的勾选
+      _this.tree.checkAllNodes(false);
+      // 合并所有父节点
+      _this.tree.expandAll(false);
       $('.modal').modal({
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
@@ -296,6 +300,8 @@ export default {
       // _this.course = course;
       // _this.course = $.extend({}, course);
       _this.course = Object.assign({}, course);
+      // 查询当前课程所有的分类信息
+      _this.listCourseCategory(course.id);
       $('.modal').modal('show');
     },
     save() {
@@ -406,8 +412,25 @@ export default {
 
 
       });
-
-
+    },
+    listCourseCategory(courseId) {
+      const _this = this;
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/list-category/${courseId}`)
+          .then(response => {
+            const responseDto = response.data;
+            const courseCategoryList = responseDto.content;
+            // 先取消ztree中所有的勾选
+            _this.tree.checkAllNodes(false);
+            // 循环遍历 courseCategoryList，勾选ztree相应的checkbox
+            courseCategoryList.forEach(courseCategory => {
+              const node = _this.tree.getNodeByParam("id", courseCategory.categoryId);
+              // 如果是父节点，则说明该父节点下一定还有子节点被勾选，则展开该父节点
+              if (node.parent === '00000000') {
+                _this.tree.expandNode(node, true);
+              }
+              _this.tree.checkNode(node, true);
+            });
+          })
     },
 
     initTree() {
