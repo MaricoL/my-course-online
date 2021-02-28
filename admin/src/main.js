@@ -3,9 +3,16 @@ import App from './app.vue'
 import router from './router'
 import axios from 'axios'
 
+import Filter from '@/filter/Filter'
+
 Vue.config.productionTip = false
 // 定义一个Vue全局变量，可以在任意组件中使用 this.$ajax 访问
 Vue.prototype.$ajax = axios
+
+// 定义全局过滤器
+Object.keys(Filter).forEach(key=>{
+  Vue.filter(key, Filter[key]);
+})
 
 /**
  * axios拦截器

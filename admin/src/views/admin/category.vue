@@ -17,31 +17,29 @@
 
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
-      <tr><#list fieldList as field>
-        <#if field.nameHump != "createAt" && field.nameHump != "updateAt"><th>${field.nameCn}</th></#if></#list>
+      <tr>
+        <th>id</th>
+        <th>父id</th>
+        <th>名称</th>
+        <th>顺序</th>
         <th>操作</th>
       </tr>
       </thead>
 
       <tbody>
-      <tr v-for="${domain} in ${domain}s" :key="${domain}.id">
-          <#list fieldList as field>
-            <#if field.nameHump != "createAt" && field.nameHump != "updateAt">
-              <#if field.enums>
-              <td>{{ ${field.enumsConst} | optionObjFilter(${domain}.${field.nameHump}) }}</td>
-              <#else>
-              <td>{{ ${domain}.${field.nameHump} }}</td>
-              </#if>
-            </#if>
-          </#list>
+      <tr v-for="category in categorys" :key="category.id">
+              <td>{{ category.id }}</td>
+              <td>{{ category.parent }}</td>
+              <td>{{ category.name }}</td>
+              <td>{{ category.sort }}</td>
         <td>
           <!-- 在小屏幕和超小屏幕上隐藏 -->
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-info" @click="edit(${domain})">
+            <button class="btn btn-xs btn-info" @click="edit(category)">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
 
-            <button class="btn btn-xs btn-danger" @click="del(${domain}.id)">
+            <button class="btn btn-xs btn-danger" @click="del(category.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
 
@@ -92,22 +90,24 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-                <#list fieldList as field>
-                  <#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">${field.nameCn}</label>
+                        <label class="col-sm-2 control-label">父id</label>
                         <div class="col-sm-10">
-                          <#if field.enums>
-                            <select class="form-control" v-model="${domain}.${field.nameHump}">
-                              <option v-for="${field.enumsConst}Obj in ${field.enumsConst}" :value="${field.enumsConst}Obj.key">{{ ${field.enumsConst}Obj.value}}</option>
-                            </select>
-                          <#else>
-                          <input type="text" class="form-control" placeholder="${field.nameCn}" v-model="${domain}.${field.nameHump}">
-                          </#if>
+                          <input type="text" class="form-control" placeholder="父id" v-model="category.parent">
                         </div>
                     </div>
-                  </#if>
-                </#list>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" placeholder="名称" v-model="category.name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">顺序</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" placeholder="顺序" v-model="category.sort">
+                        </div>
+                    </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -126,19 +126,14 @@
 import Pagination from "../../components/pagination";
 
 export default {
-  name: "${MODULE}-${domain}",
+  name: "business-category",
   components: {
     Pagination
   },
   data() {
     return {
-      ${domain}: {},
-      ${domain}s: [],
-      <#list fieldList as field>
-          <#if field.enums>
-      ${field.enumsConst}: ${field.enumsConst},
-          </#if>
-      </#list>
+      category: {},
+      categorys: [],
     }
   },
   mounted() {
@@ -148,7 +143,7 @@ export default {
     _this.list(1);
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
-    // this.$parent.activeSideBar('${MODULE}-${domain}-sidebar');
+    // this.$parent.activeSideBar('business-category-sidebar');
     // this.list();
   },
   methods: {
@@ -156,44 +151,37 @@ export default {
       // $('.modal').modal('show');
       let _this = this;
       // 清空模态框中的文字
-      _this.${domain} = {};
+      _this.category = {};
       $('.modal').modal({
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
       });
     },
-    edit(${domain}) {
+    edit(category) {
       let _this = this;
-      // _this.${domain} = ${domain} 会在修改模态框中的字段时，自动修改背后数据表格的值
-      // _this.${domain} = ${domain};
-      // _this.${domain} = $.extend({}, ${domain});
-      _this.${domain} = Object.assign({}, ${domain});
+      // _this.category = category 会在修改模态框中的字段时，自动修改背后数据表格的值
+      // _this.category = category;
+      // _this.category = $.extend({}, category);
+      _this.category = Object.assign({}, category);
       $('.modal').modal('show');
     },
     save() {
       let _this = this;
       // 保存校验
         if(1 != 1
-        <#list fieldList as field>
-          <#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt" && field.nameHump != "sort">
-            <#if !field.nullable>
-              || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameCn}")
-            </#if>
-            <#if (field.length > 0)>
-              || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length?c})
-            </#if>
-          </#if>
-        </#list>
+              || !Validator.require(_this.category.parent, "父id")
+              || !Validator.require(_this.category.name, "名称")
+              || !Validator.length(_this.category.name, "名称", 1, 50)
         ){
         return;
       }
-      _this.$ajax.post(`${"$"}{process.env.VUE_APP_SERVER}/${MODULE}/admin/${domain}/save`,
-          _this.${domain}
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/save`,
+          _this.category
       ).then((response) => {
         const responseDto = response.data;
         if (responseDto.success) {
           Toast.success("保存成功！");
-          // console.log("新增${tableNameCn}列表结果：", responseDto.content);
+          // console.log("新增分类列表结果：", responseDto.content);
           // 关闭模态框
           $('.modal').modal('hide');
           // 刷新表格数据
@@ -206,10 +194,10 @@ export default {
     },
     del(id) {
       let _this = this;
-      Confirm.show("删除${tableNameCn}后不可恢复，确认删除?", () => {
-        _this.$ajax.delete(`${"$"}{process.env.VUE_APP_SERVER}/${MODULE}/admin/${domain}/delete/${"$"}{id}`)
+      Confirm.show("删除分类后不可恢复，确认删除?", () => {
+        _this.$ajax.delete(`${process.env.VUE_APP_SERVER}/business/admin/category/delete/${id}`)
             .then(response => {
-              // console.log("删除${tableNameCn}列表结果：", response);
+              // console.log("删除分类列表结果：", response);
               let responseDto = response.data;
               if (responseDto.success) {
                 // 刷新表格数据
@@ -224,29 +212,29 @@ export default {
       console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
 
       let _this = this;
-      _this.$ajax.post(`${"$"}{process.env.VUE_APP_SERVER}/${MODULE}/admin/${domain}/list`, {
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/list`, {
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response) => {
-        // console.log("查询${tableNameCn}列表结果：", response);
+        // console.log("查询分类列表结果：", response);
         const responseDto = response.data;
-        _this.${domain}s = responseDto.content.list;
+        _this.categorys = responseDto.content.list;
         _this.$refs.pagination.render(page, responseDto.content.total);
       })
     }
 
     // list() {
     //   const _this = this;
-    //   // _this.$ajax.get('http://localhost:9000/${MODULE}/admin/${domain}/list')
+    //   // _this.$ajax.get('http://localhost:9000/business/admin/category/list')
     //   // jquery ajax 默认是表单的方式 ，axios ajax 默认是以JSON的方式
-    //   // 在这里需要在 ${Domain}Controller 所对应的 list() 方法行参上加上 @RequestBody 注解
-    //   _this.$ajax.post(`${"$"}{process.env.VUE_APP_SERVER}/${MODULE}/admin/${domain}/list`, {
+    //   // 在这里需要在 CategoryController 所对应的 list() 方法行参上加上 @RequestBody 注解
+    //   _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/list`, {
     //     page: 2,
     //     size: 5
     //   })
     //       .then(response => {
     //         // console.log(response);
-    //         _this.${domain}s = response.data.list;
+    //         _this.categorys = response.data.list;
     //       })
     // }
   }

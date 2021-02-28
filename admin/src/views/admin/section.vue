@@ -53,7 +53,7 @@
         <td>{{ section.chapterId }}</td>
         <td>{{ section.video }}</td>
         <td>{{ section.time | formatTimeFilter}}</td>
-        <td>{{ CHARGE | chargeFilter(section.charge) }}</td>
+        <td>{{ CHARGE | optionObjFilter(section.charge) }}</td>
         <td>{{ section.sort }}</td>
         <td>{{ section.createdAt }}</td>
         <td>{{ section.updatedAt }}</td>
@@ -181,11 +181,11 @@ export default {
   components: {
     Pagination
   },
-  filters: {
-    // chargeFilter: Filter.optionKV
-    chargeFilter: Filter.optionObj,
-    formatTimeFilter: Filter.formatTime
-  },
+  // filters: {
+  //   // chargeFilter: Filter.optionKV
+  //   chargeFilter: Filter.optionObj,
+  //   formatTimeFilter: Filter.formatTime
+  // },
   data() {
     return {
       section: {},

@@ -23,13 +23,13 @@
           <div class="caption">
             <div class="clearfix">
               <span class="pull-right label label-primary info-label">
-                {{ COURSE_LEVEL | optionObj(course.level) }}
+                {{ COURSE_LEVEL | optionObjFilter(course.level) }}
               </span>
               <span class="pull-right label label-pink info-label">
-                {{ COURSE_CHARGE | optionObj(course.charge) }}
+                {{ COURSE_CHARGE | optionObjFilter(course.charge) }}
               </span>
               <span class="pull-right label label-purple info-label">
-                {{ COURSE_STATUS | optionObj(course.status) }}
+                {{ COURSE_STATUS | optionObjFilter(course.status) }}
               </span>
             </div>
 
@@ -251,10 +251,10 @@ export default {
   components: {
     Pagination
   },
-  filters: {
-    optionObj: Filter.optionObj,
-    formatTimeFilter: Filter.formatTime
-  },
+  // filters: {
+  //   optionObj: Filter.optionObj,
+  //   formatTimeFilter: Filter.formatTime
+  // },
   data() {
     return {
       course: {},
