@@ -158,6 +158,13 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
+                <label class="col-sm-2 control-label">分类</label>
+                <div class="col-sm-10">
+                  <ul id="tree" class="ztree"></ul>
+                  <!--                  <input type="text" class="form-control" placeholder="名称" v-model="course.name">-->
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" placeholder="名称" v-model="course.name">
@@ -251,10 +258,6 @@ export default {
   components: {
     Pagination
   },
-  // filters: {
-  //   optionObj: Filter.optionObj,
-  //   formatTimeFilter: Filter.formatTime
-  // },
   data() {
     return {
       course: {},
@@ -268,6 +271,8 @@ export default {
     let _this = this;
     // 每页 5 条数据
     _this.$refs.pagination.size = 5;
+    // 初始化分类树
+    _this.initTree();
     _this.list(1);
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
@@ -355,6 +360,37 @@ export default {
     toChapter(course) {
       SessionStorage.set("course", course);
       this.$router.push("/business/chapter");
+    },
+
+    initTree() {
+      let setting = {
+        check: {
+          enable: true
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        }
+      };
+
+      let zNodes = [
+        {id: 1, pId: 0, name: "随意勾选 1", open: true},
+        {id: 11, pId: 1, name: "随意勾选 1-1", open: true},
+        {id: 111, pId: 11, name: "随意勾选 1-1-1"},
+        {id: 112, pId: 11, name: "随意勾选 1-1-2"},
+        {id: 12, pId: 1, name: "随意勾选 1-2", open: true},
+        {id: 121, pId: 12, name: "随意勾选 1-2-1"},
+        {id: 122, pId: 12, name: "随意勾选 1-2-2"},
+        {id: 2, pId: 0, name: "随意勾选 2", checked: true, open: true},
+        {id: 21, pId: 2, name: "随意勾选 2-1"},
+        {id: 22, pId: 2, name: "随意勾选 2-2", open: true},
+        {id: 221, pId: 22, name: "随意勾选 2-2-1", checked: true},
+        {id: 222, pId: 22, name: "随意勾选 2-2-2"},
+        {id: 23, pId: 2, name: "随意勾选 2-3"}
+      ];
+
+      $.fn.zTree.init($("#tree"), setting, zNodes);
     }
 
     // list() {
