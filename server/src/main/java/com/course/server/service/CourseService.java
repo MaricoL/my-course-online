@@ -27,6 +27,9 @@ public class CourseService {
     @Resource
     private MyCourseMapper myCourseMapper;
 
+    @Resource
+    private CourseCategoryService courseCategoryService;
+
     public void list(PageDto<CourseDto> pageDto){
         // 分页插件：获取第2页数据，每页5条
         // 对应SQL：limit 2 - 1 ， 5
@@ -53,6 +56,8 @@ public class CourseService {
         }else{
             insert(course);
         }
+        // 批量保存课程分类
+        courseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     // 新增

@@ -265,6 +265,7 @@ export default {
       COURSE_LEVEL,
       COURSE_CHARGE,
       COURSE_STATUS,
+      tree: {}
     }
   },
   mounted() {
@@ -308,6 +309,14 @@ export default {
       ) {
         return;
       }
+
+      // 获取在ztree中被勾选的分类信息列表
+      let checkedNodes = _this.tree.getCheckedNodes();
+      if (Tool.isEmpty(checkedNodes)) {
+        Toast.warning('请选择该课程相应的分类！');
+        return;
+      }
+      _this.course.categorys = checkedNodes;
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/save`,
           _this.course
       ).then((response) => {
@@ -323,7 +332,7 @@ export default {
           Toast.warning(responseDto.message);
         }
 
-      })
+      });
     },
     del(id) {
       let _this = this;
@@ -419,7 +428,7 @@ export default {
 
       let zNodes = _this.categorys;
 
-      $.fn.zTree.init($("#tree"), setting, zNodes);
+      _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
     }
 
     // list() {
