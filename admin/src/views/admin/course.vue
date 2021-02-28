@@ -269,10 +269,9 @@ export default {
   },
   mounted() {
     let _this = this;
+    _this.allCategory();
     // 每页 5 条数据
     _this.$refs.pagination.size = 5;
-    // 初始化分类树
-    _this.initTree();
     _this.list(1);
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
@@ -362,33 +361,63 @@ export default {
       this.$router.push("/business/chapter");
     },
 
+    // 查询所有分类数据
+    allCategory() {
+      console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
+
+      let _this = this;
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/all`).then((response) => {
+        // console.log("查询分类列表结果：", response);
+        const responseDto = response.data;
+        _this.categorys = responseDto.content;
+
+        // 初始化分类树
+        _this.initTree();
+
+        // 将结果转换为树状结构
+        _this.level1 = _this.categorys
+            .filter(category => category.parent === '00000000')
+            .map(category => {
+              if (Tool.isEmpty(category.children)) {
+                category.children = [];
+              }
+              _this.categorys.forEach(child => {
+                if (child.parent === category.id) {
+                  category.children.push(child);
+                }
+              })
+              return category;
+            });
+
+        // 刷新 右侧子分类表格数据
+        _this.level2 = [];
+        setTimeout(() => {
+          $('.active').trigger('click');
+        }, 100);
+
+
+      });
+
+
+    },
+
     initTree() {
+      let _this = this;
       let setting = {
         check: {
           enable: true
         },
         data: {
           simpleData: {
-            enable: true
+            enable: true,
+            idKey: "id",
+            pIdKey: "parent",
+            rootPId: "00000000"
           }
         }
       };
 
-      let zNodes = [
-        {id: 1, pId: 0, name: "随意勾选 1", open: true},
-        {id: 11, pId: 1, name: "随意勾选 1-1", open: true},
-        {id: 111, pId: 11, name: "随意勾选 1-1-1"},
-        {id: 112, pId: 11, name: "随意勾选 1-1-2"},
-        {id: 12, pId: 1, name: "随意勾选 1-2", open: true},
-        {id: 121, pId: 12, name: "随意勾选 1-2-1"},
-        {id: 122, pId: 12, name: "随意勾选 1-2-2"},
-        {id: 2, pId: 0, name: "随意勾选 2", checked: true, open: true},
-        {id: 21, pId: 2, name: "随意勾选 2-1"},
-        {id: 22, pId: 2, name: "随意勾选 2-2", open: true},
-        {id: 221, pId: 22, name: "随意勾选 2-2-1", checked: true},
-        {id: 222, pId: 22, name: "随意勾选 2-2-2"},
-        {id: 23, pId: 2, name: "随意勾选 2-3"}
-      ];
+      let zNodes = _this.categorys;
 
       $.fn.zTree.init($("#tree"), setting, zNodes);
     }
