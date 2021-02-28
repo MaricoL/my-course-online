@@ -1,81 +1,155 @@
 <template>
   <div>
-    <p>
-      <button @click="add()" class="btn btn-white btn-default btn-round">
-        <i class="ace-icon fa fa-edit"></i>
-        新增
-      </button>
-      &nbsp;
-      <button @click="list(1)" class="btn btn-white btn-default btn-round">
-        <i class="ace-icon fa fa-refresh"></i>
-        刷新
-      </button>
-    </p>
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <button @click="add1()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-edit"></i>
+            新增一级
+          </button>
+          &nbsp;
+          <button @click="all()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-refresh"></i>
+            刷新
+          </button>
+        </p>
+        <table id="level1-table" class="table  table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>顺序</th>
+            <th>操作</th>
+          </tr>
+          </thead>
 
-    <!--  itemCount：最多显示8个页码  -->
-    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+          <tbody>
+          <tr v-for="category in level1" :key="category.id" @click="showLevel2(category)"
+              :class="{'active': active.id === category.id}">
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.sort }}</td>
+            <td>
+              <!-- 在小屏幕和超小屏幕上隐藏 -->
+              <div class="hidden-sm hidden-xs btn-group">
+                <button class="btn btn-xs btn-info" @click="edit(category)">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
 
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <tr>
-        <th>id</th>
-        <th>父id</th>
-        <th>名称</th>
-        <th>顺序</th>
-        <th>操作</th>
-      </tr>
-      </thead>
+                <button class="btn btn-xs btn-danger" @click="del(category.id)">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
 
-      <tbody>
-      <tr v-for="category in categorys" :key="category.id">
-              <td>{{ category.id }}</td>
-              <td>{{ category.parent }}</td>
-              <td>{{ category.name }}</td>
-              <td>{{ category.sort }}</td>
-        <td>
-          <!-- 在小屏幕和超小屏幕上隐藏 -->
-          <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-info" @click="edit(category)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
+              </div>
 
-            <button class="btn btn-xs btn-danger" @click="del(category.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
+              <!-- 在中屏幕和大屏幕上隐藏 -->
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown"
+                          data-position="auto">
+                    <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                  </button>
 
-          </div>
-
-          <!-- 在中屏幕和大屏幕上隐藏 -->
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+                  <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                    <li>
+                      <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
 																			<span class="green">
 																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																			</span>
-                  </a>
-                </li>
+                      </a>
+                    </li>
 
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+                    <li>
+                      <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
 																			<span class="red">
 																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																			</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </td>
-      </tr>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
 
-      </tbody>
-    </table>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <p>
+          <button @click="add2()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-edit"></i>
+            新增二级
+          </button>
+          &nbsp;
+          <button id="btn2" @click="all()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-refresh"></i>
+            刷新
+          </button>
+        </p>
+        <table id="level2-table" class="table  table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>顺序</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr v-for="category in level2" :key="category.id">
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.sort }}</td>
+            <td>
+              <!-- 在小屏幕和超小屏幕上隐藏 -->
+              <div class="hidden-sm hidden-xs btn-group">
+                <button class="btn btn-xs btn-info" @click="edit(category)">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
+
+                <button class="btn btn-xs btn-danger" @click="del(category.id)">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+
+              </div>
+
+              <!-- 在中屏幕和大屏幕上隐藏 -->
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown"
+                          data-position="auto">
+                    <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                  </button>
+
+                  <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                    <li>
+                      <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+																			<span class="green">
+																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																			</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																			<span class="red">
+																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																			</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
 
     <!-- Modal -->
     <div id="form_modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -90,24 +164,24 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">父id</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="父id" v-model="category.parent">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">名称</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="名称" v-model="category.name">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">顺序</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="顺序" v-model="category.sort">
-                        </div>
-                    </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">父分类</label>
+                <div class="col-sm-10">
+                  <p class="form-control-static">{{ category.parent === '00000000' ? '无' : active.name }}</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="名称" v-model="category.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">顺序</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="顺序" v-model="category.sort">
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -123,35 +197,49 @@
 </template>
 
 <script>
-import Pagination from "../../components/pagination";
 
 export default {
   name: "business-category",
-  components: {
-    Pagination
-  },
   data() {
     return {
       category: {},
       categorys: [],
+      level1: [],
+      level2: [],
+      active: {},
     }
   },
   mounted() {
     let _this = this;
-    // 每页 5 条数据
-    _this.$refs.pagination.size = 5;
-    _this.list(1);
+
+    _this.all(1);
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
     // this.$parent.activeSideBar('business-category-sidebar');
     // this.list();
   },
   methods: {
-    add() {
+    add1() {
       // $('.modal').modal('show');
       let _this = this;
-      // 清空模态框中的文字
-      _this.category = {};
+      _this.category = {
+        parent: '00000000'
+      };
+      $('.modal').modal({
+        show: true,
+        backdrop: 'static'  //  禁止点击模态框外部时关闭
+      });
+    },
+    add2() {
+      // $('.modal').modal('show');
+      let _this = this;
+      if (Tool.isEmpty(_this.active)) {
+        Toast.warning('请先选择一级分类！');
+        return;
+      }
+      _this.category = {
+        parent: _this.active.id
+      };
       $('.modal').modal({
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
@@ -168,11 +256,11 @@ export default {
     save() {
       let _this = this;
       // 保存校验
-        if(1 != 1
-              || !Validator.require(_this.category.parent, "父id")
-              || !Validator.require(_this.category.name, "名称")
-              || !Validator.length(_this.category.name, "名称", 1, 50)
-        ){
+      if (1 != 1
+          || !Validator.require(_this.category.parent, "父id")
+          || !Validator.require(_this.category.name, "名称")
+          || !Validator.length(_this.category.name, "名称", 1, 50)
+      ) {
         return;
       }
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/save`,
@@ -185,8 +273,8 @@ export default {
           // 关闭模态框
           $('.modal').modal('hide');
           // 刷新表格数据
-          _this.list(1);
-        }else{
+          _this.all(1);
+        } else {
           Toast.warning(responseDto.message);
         }
 
@@ -201,46 +289,61 @@ export default {
               let responseDto = response.data;
               if (responseDto.success) {
                 // 刷新表格数据
-                _this.list(1);
+                _this.all();
                 Toast.success("删除成功！");
               }
             })
       })
 
     },
-    list(page) {
+
+    all() {
       console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
 
       let _this = this;
-      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/list`, {
-        page: page,
-        size: _this.$refs.pagination.size,
-      }).then((response) => {
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/all`).then((response) => {
         // console.log("查询分类列表结果：", response);
         const responseDto = response.data;
-        _this.categorys = responseDto.content.list;
-        _this.$refs.pagination.render(page, responseDto.content.total);
-      })
+        _this.categorys = responseDto.content;
+
+        // 将结果转换为树状结构
+        _this.level1 = _this.categorys
+            .filter(category => category.parent === '00000000')
+            .map(category => {
+              if (Tool.isEmpty(category.children)) {
+                category.children = [];
+              }
+              _this.categorys.forEach(child => {
+                if (child.parent === category.id) {
+                  category.children.push(child);
+                }
+              })
+              return category;
+            });
+
+        // 刷新 右侧子分类表格数据
+        _this.level2 = [];
+        setTimeout(() => {
+          $('.active').trigger('click');
+        }, 100);
+
+
+      });
+
+
+    },
+    showLevel2(category) {
+      this.level2 = category.children;
+      this.active = category;
     }
 
-    // list() {
-    //   const _this = this;
-    //   // _this.$ajax.get('http://localhost:9000/business/admin/category/list')
-    //   // jquery ajax 默认是表单的方式 ，axios ajax 默认是以JSON的方式
-    //   // 在这里需要在 CategoryController 所对应的 list() 方法行参上加上 @RequestBody 注解
-    //   _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/category/list`, {
-    //     page: 2,
-    //     size: 5
-    //   })
-    //       .then(response => {
-    //         // console.log(response);
-    //         _this.categorys = response.data.list;
-    //       })
-    // }
+
   }
 }
 </script>
 
 <style scoped>
-
+.active td {
+  background-color: #bfc000 !important;
+}
 </style>

@@ -10,6 +10,7 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -21,6 +22,20 @@ public class CategoryService {
 
     @Resource
     private CategoryMapper categoryMapper;
+
+    public List<CategoryDto> all(){
+        // 分页插件：获取第2页数据，每页5条
+        // 对应SQL：limit 2 - 1 ， 5
+//        PageHelper.startPage(2, 5);
+        CategoryExample categoryexample = new CategoryExample();
+        categoryexample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryexample);
+
+        PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
+
+        return CopyUtil.copyList(categoryList, CategoryDto.class);
+    }
+
 
     public void list(PageDto<CategoryDto> pageDto){
         // 分页插件：获取第2页数据，每页5条
@@ -63,7 +78,21 @@ public class CategoryService {
     }
 
     // 删除
+    @Transactional
     public void delete(String categoryId) {
+        // 如果是父分类，先删除其下的子分类
+        deleteChildren(categoryId);
         categoryMapper.deleteByPrimaryKey(categoryId);
+    }
+
+    // 删除该父分类下的子分类
+    private void deleteChildren(String categoryId) {
+        Category category = categoryMapper.selectByPrimaryKey(categoryId);
+        if ("00000000".equals(category.getParent())) {
+            CategoryExample example = new CategoryExample();
+            example.createCriteria().andParentEqualTo(category.getId());
+            categoryMapper.deleteByExample(example);
+        }
+
     }
 }

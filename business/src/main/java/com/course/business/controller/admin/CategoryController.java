@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -25,6 +26,14 @@ public class CategoryController {
      * 查询所有
      */
     // @RequestBody：前端发送POST请求，数据为JSON格式，需要在行参上加上此注解
+    @PostMapping("/all")
+    public ResponseDto<?> list() {
+        ResponseDto<List<CategoryDto>> responseDto = new ResponseDto<>();
+        List<CategoryDto> categoryDtoList = categoryService.all();
+        responseDto.setContent(categoryDtoList);
+        return responseDto;
+    }
+
     @PostMapping("/list")
     public ResponseDto<?> list(@RequestBody PageDto<CategoryDto> pageDto) {
         ResponseDto<PageDto<CategoryDto>> responseDto = new ResponseDto<>();
