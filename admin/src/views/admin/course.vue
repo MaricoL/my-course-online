@@ -50,6 +50,10 @@
                 <i class="ace-icon fa fa-book green"></i>
                 大章
               </button>&nbsp;
+              <button class="btn btn-white btn-xs btn-success btn-round" @click="editContent(course)">
+                <i class="ace-icon fa fa-book green"></i>
+                内容
+              </button>&nbsp;
               <button class="btn btn-white btn-xs btn-default btn-round" @click="edit(course)">
                 <i class="ace-icon fa fa-pencil blue"></i>
                 编辑
@@ -247,6 +251,36 @@
     </div>
 
 
+    <!-- course-content-modal -->
+    <div id="course-content-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog width-50">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" data-target="#mymodal-data" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="modal-title" id="course-content-title">课程内容</h5>
+
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div id="content"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" @click="saveContent()">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -303,6 +337,50 @@ export default {
       // 查询当前课程所有的分类信息
       _this.listCourseCategory(course.id);
       $('.modal').modal('show');
+    },
+    // 修改课程内容，弹出模态框
+    editContent(course) {
+      let _this = this;
+      _this.course = course;
+      $("#content").summernote({
+        focus: true,
+        height: 300,
+      });
+      // 先清空历史文本
+      $("#content").summernote('code', '');
+      // 获取该课程的课程内容
+      _this.$ajax.get(`${process.env.VUE_APP_SERVER}/business/admin/course/find-content/${course.id}`)
+          .then(response => {
+            let responseDto = response.data;
+            if (responseDto.success) {
+              $('#course-content-modal').modal({
+                show: true,
+                backdrop: 'static'  //  禁止点击模态框外部时关闭
+              });
+              if (responseDto.content) {
+                $("#content").summernote('code', responseDto.content.content);
+              }
+            } else {
+              Toast.warning(responseDto.message);
+            }
+          });
+    },
+    // 保存课程内容
+    saveContent() {
+      let _this = this;
+      let content = $("#content").summernote('code');
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/save-content`, {
+        id: _this.course.id,
+        content
+      }).then(response => {
+        let responseDto = response.data;
+        if (responseDto.success) {
+          Toast.success('内容保存成功！');
+
+        } else {
+          Toast.warning(responseDto.message);
+        }
+      })
     },
     save() {
       let _this = this;

@@ -1,9 +1,12 @@
 package com.course.server.service;
 
 import com.course.server.domain.Course;
+import com.course.server.domain.CourseContent;
 import com.course.server.domain.CourseExample;
+import com.course.server.dto.CourseContentDto;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
+import com.course.server.mapper.CourseContentMapper;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
@@ -30,6 +33,9 @@ public class CourseService {
 
     @Resource
     private CourseCategoryService courseCategoryService;
+
+    @Resource
+    private CourseContentMapper courseContentMapper;
 
     public void list(PageDto<CourseDto> pageDto){
         // 分页插件：获取第2页数据，每页5条
@@ -85,5 +91,22 @@ public class CourseService {
     // 跟新课程总时长
     public void updateTime(String courseId) {
         myCourseMapper.updateTime(courseId);
+    }
+
+    // 查询该课程对应的课程内容
+    public CourseContentDto findContent(String courseId) {
+        CourseContent courseContent = courseContentMapper.selectByPrimaryKey(courseId);
+        return CopyUtil.copy(courseContent,CourseContentDto.class);
+    }
+
+    // 保存该课程对应的课程内容
+    public int saveContent(CourseContentDto courseContentDto) {
+        CourseContent courseContent = CopyUtil.copy(courseContentDto, CourseContent.class);
+        // 先更新，如果数据库中没有该课程对应的信息，则改为添加
+        int count = courseContentMapper.updateByPrimaryKeyWithBLOBs(courseContent);
+        if (count == 0) {
+            count = courseContentMapper.insert(courseContent);
+        }
+        return count;
     }
 }
