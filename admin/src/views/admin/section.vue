@@ -204,15 +204,14 @@ export default {
     } else {
       _this.course = course;
       _this.chapter = chapter;
+      // 每页 5 条数据
+      _this.$refs.pagination.size = 5;
+      _this.list(1);
+      // 激活样式方法一：
+      // 调用父组件的 activeSideBar 方法
+      // this.$parent.activeSideBar('business-section-sidebar');
+      // this.list();
     }
-
-    // 每页 5 条数据
-    _this.$refs.pagination.size = 5;
-    _this.list(1);
-    // 激活样式方法一：
-    // 调用父组件的 activeSideBar 方法
-    // this.$parent.activeSideBar('business-section-sidebar');
-    // this.list();
   },
   methods: {
     add() {

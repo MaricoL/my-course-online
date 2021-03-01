@@ -152,15 +152,16 @@ export default {
       _this.$router.push("/welcome");
     } else {
       _this.course = course;
+      // 每页 5 条数据
+      _this.$refs.pagination.size = 5;
+      _this.list(1);
+      // 激活样式方法一：
+      // 调用父组件的 activeSideBar 方法
+      // this.$parent.activeSideBar('business-chapter-sidebar');
+      // this.list();
     }
 
-    // 每页 5 条数据
-    _this.$refs.pagination.size = 5;
-    _this.list(1);
-    // 激活样式方法一：
-    // 调用父组件的 activeSideBar 方法
-    // this.$parent.activeSideBar('business-chapter-sidebar');
-    // this.list();
+
   },
   methods: {
     add() {

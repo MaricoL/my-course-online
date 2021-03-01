@@ -521,7 +521,7 @@ export default {
     // 注意：此方法只有进到admin页面中，点击admin页面中的菜单栏时才会被监听到，也就时监听子组件路由
     // 从login页面跳转到admin页面不会被监听到路由变化
     $route: {
-      handler(oldRoute,newRoute) {
+      handler(newRoute,oldRoute) {
         console.log(`路由发生变化：${oldRoute.path} => ${newRoute.path}`);
         let _this = this;
         _this.$nextTick(() => {
