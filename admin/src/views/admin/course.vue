@@ -267,6 +267,11 @@
             <form class="form-horizontal">
               <div class="form-group">
                 <div class="col-lg-12">
+                  {{ saveContentLabel }}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-12">
                   <div id="content"></div>
                 </div>
               </div>
@@ -299,7 +304,8 @@ export default {
       COURSE_LEVEL,
       COURSE_CHARGE,
       COURSE_STATUS,
-      tree: {}
+      tree: {},
+      saveContentLabel: ''
     }
   },
   mounted() {
@@ -360,6 +366,15 @@ export default {
               if (responseDto.content) {
                 $("#content").summernote('code', responseDto.content.content);
               }
+
+              //自动保存功能
+              let saveContentInterval = setInterval(() => {
+                _this.saveContent();
+              }, 5000);
+              // 关闭模态框时，清空自动保存功能
+              $('#course-content-modal').on('hidden.bs.modal', (e) => {
+                clearInterval(saveContentInterval);
+              });
             } else {
               Toast.warning(responseDto.message);
             }
@@ -375,8 +390,8 @@ export default {
       }).then(response => {
         let responseDto = response.data;
         if (responseDto.success) {
-          Toast.success('内容保存成功！');
-
+          // Toast.success('内容保存成功！');
+          _this.saveContentLabel = new Date();
         } else {
           Toast.warning(responseDto.message);
         }
@@ -415,7 +430,6 @@ export default {
         } else {
           Toast.warning(responseDto.message);
         }
-
       });
     },
     del(id) {
@@ -432,7 +446,6 @@ export default {
               }
             })
       })
-
     },
     list(page) {
       console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
