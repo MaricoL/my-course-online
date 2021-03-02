@@ -65,4 +65,10 @@ public class TeacherService {
     public void delete(String teacherId) {
         teacherMapper.deleteByPrimaryKey(teacherId);
     }
+
+    // 查询所有讲师
+    public List<TeacherDto> all() {
+        List<Teacher> teacherList = teacherMapper.selectByExample(null);
+        return CopyUtil.copyList(teacherList, TeacherDto.class);
+    }
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/teacher")
@@ -20,6 +21,18 @@ public class TeacherController {
 
     @Resource
     private TeacherService teacherService;
+
+    /**
+     * 查询所有讲师
+     */
+    // @RequestBody：前端发送POST请求，数据为JSON格式，需要在行参上加上此注解
+    @PostMapping("/all")
+    public ResponseDto<?> list() {
+        ResponseDto<List<TeacherDto>> responseDto = new ResponseDto<>();
+        List<TeacherDto> teacherDtoList = teacherService.all();
+        responseDto.setContent(teacherDtoList);
+        return responseDto;
+    }
 
     /**
      * 查询所有

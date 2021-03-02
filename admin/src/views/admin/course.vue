@@ -36,6 +36,7 @@
             <h3 class="search-title">
               <a href="#" class="blue">{{ course.name }}</a>
             </h3>
+
             <p>
               <span class="blue bolder bigger-150">{{ course.price }} <i class="fa fa-rmb"></i></span>
             </p>
@@ -95,6 +96,14 @@
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" placeholder="名称" v-model="course.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">讲师</label>
+                <div class="col-sm-10">
+                  <select v-model="course.teacherId" class="form-control">
+                    <option v-for="o in teachers" v-bind:value="o.id">{{o.name}}</option>
+                  </select>
                 </div>
               </div>
               <div class="form-group">
@@ -274,15 +283,18 @@ export default {
         id: '',
         oldSort: 0,
         newSort: 0
-      }
+      },
+      teachers: []
     }
   },
   mounted() {
     let _this = this;
     _this.allCategory();
+    _this.allTeachers();
     // 每页 5 条数据
     _this.$refs.pagination.size = 5;
     _this.list(1);
+    //
     // 激活样式方法一：
     // 调用父组件的 activeSideBar 方法
     // this.$parent.activeSideBar('business-course-sidebar');
@@ -521,7 +533,7 @@ export default {
     openSortModal(course) {
       let _this = this;
       _this.sort = {
-        id : course.id,
+        id: course.id,
         oldSort: course.sort,
         newSort: course.sort
       }
@@ -529,24 +541,35 @@ export default {
     },
 
     // 更新排序
-    updateSort(){
+    updateSort() {
       let _this = this;
       if (_this.sort.oldSort === _this.sort.newSort) {
         Toast.warning('排序没有变化！');
         return;
       }
-      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/sort`,_this.sort)
-      .then(response => {
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/sort`, _this.sort)
+          .then(response => {
+            const responseDto = response.data;
+            if (responseDto.success) {
+              Toast.success('更新排序成功！');
+              $('#course-sort-modal').modal('hide');
+              _this.list(1);
+            } else {
+              Toast.error('更新排序失败！');
+            }
+          })
+    },
+
+    // 查询所有讲师
+    allTeachers() {
+      console.log("当前应用服务请求地址：" + process.env.VUE_APP_SERVER);
+
+      let _this = this;
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/teacher/all`).then((response) => {
         const responseDto = response.data;
-        if (responseDto.success) {
-          Toast.success('更新排序成功！');
-          $('#course-sort-modal').modal('hide');
-          _this.list(1);
-        }else{
-          Toast.error('更新排序失败！');
-        }
-      })
-    }
+        _this.teachers = responseDto.content;
+      });
+    },
 
     // list() {
     //   const _this = this;
