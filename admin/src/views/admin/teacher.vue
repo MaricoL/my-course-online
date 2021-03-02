@@ -15,73 +15,118 @@
     <!--  itemCount：最多显示8个页码  -->
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
 
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <tr>
-        <th>id</th>
-        <th>姓名</th>
-        <th>昵称</th>
-        <th>头像</th>
-        <th>职位</th>
-        <th>座右铭</th>
-        <th>简介</th>
-        <th>操作</th>
-      </tr>
-      </thead>
+    <div class="row">
+      <div class="col-xs-12 col-sm-3 col-md-2 center" v-for="teacher in teachers">
+        <div>
+          <span class="profile-picture">
+            <img id="avatar" class="editable img-responsive editable-click editable-empty"
+                 alt="Alex's Avatar" src="/ace/assets/images/avatars/profile-pic.jpg">
+          </span>
 
-      <tbody>
-      <tr v-for="teacher in teachers" :key="teacher.id">
-              <td>{{ teacher.id }}</td>
-              <td>{{ teacher.name }}</td>
-              <td>{{ teacher.nickname }}</td>
-              <td>{{ teacher.image }}</td>
-              <td>{{ teacher.position }}</td>
-              <td>{{ teacher.motto }}</td>
-              <td>{{ teacher.intro }}</td>
-        <td>
-          <!-- 在小屏幕和超小屏幕上隐藏 -->
-          <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-info" @click="edit(teacher)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
+          <div class="space-4"></div>
 
-            <button class="btn btn-xs btn-danger" @click="del(teacher.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-
-          </div>
-
-          <!-- 在中屏幕和大屏幕上隐藏 -->
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
-                  </a>
-                </li>
-              </ul>
+          <div class="width-85 label label-info label-xlg arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+              <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+                <i class="ace-icon fa fa-circle light-green"></i>
+                &nbsp;
+                <span class="white">Alex M. Doe</span>
+              </a>
             </div>
           </div>
-        </td>
-      </tr>
 
-      </tbody>
-    </table>
+          <div class="space-6"></div>
+
+          <a href="javascript:;" class="text-info bigger-110" v-bind:title="teacher.motto">
+            <i class="ace-icon fa fa-user"></i>
+            {{ teacher.name }}【{{ teacher.nickname }}】
+          </a>
+
+          <div class="space-6"></div>
+
+          <div class="profile-social-links align-center">
+            <button v-on:click="edit(teacher)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-pencil bigger-120"></i>
+            </button>
+            &nbsp;
+            <button v-on:click="del(teacher.id)" class="btn btn-xs btn-danger">
+              <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            </button>
+          </div>
+
+          <div class="hr hr16 dotted"></div>
+        </div>
+
+
+      </div>
+    </div>
+    <!--    <table id="simple-table" class="table  table-bordered table-hover">-->
+    <!--      <thead>-->
+    <!--      <tr>-->
+    <!--        <th>id</th>-->
+    <!--        <th>姓名</th>-->
+    <!--        <th>昵称</th>-->
+    <!--        <th>头像</th>-->
+    <!--        <th>职位</th>-->
+    <!--        <th>座右铭</th>-->
+    <!--        <th>简介</th>-->
+    <!--        <th>操作</th>-->
+    <!--      </tr>-->
+    <!--      </thead>-->
+
+    <!--      <tbody>-->
+    <!--      <tr v-for="teacher in teachers" :key="teacher.id">-->
+    <!--              <td>{{ teacher.id }}</td>-->
+    <!--              <td>{{ teacher.name }}</td>-->
+    <!--              <td>{{ teacher.nickname }}</td>-->
+    <!--              <td>{{ teacher.image }}</td>-->
+    <!--              <td>{{ teacher.position }}</td>-->
+    <!--              <td>{{ teacher.motto }}</td>-->
+    <!--              <td>{{ teacher.intro }}</td>-->
+    <!--        <td>-->
+    <!--          &lt;!&ndash; 在小屏幕和超小屏幕上隐藏 &ndash;&gt;-->
+    <!--          <div class="hidden-sm hidden-xs btn-group">-->
+    <!--            <button class="btn btn-xs btn-info" @click="edit(teacher)">-->
+    <!--              <i class="ace-icon fa fa-pencil bigger-120"></i>-->
+    <!--            </button>-->
+
+    <!--            <button class="btn btn-xs btn-danger" @click="del(teacher.id)">-->
+    <!--              <i class="ace-icon fa fa-trash-o bigger-120"></i>-->
+    <!--            </button>-->
+
+    <!--          </div>-->
+
+    <!--          &lt;!&ndash; 在中屏幕和大屏幕上隐藏 &ndash;&gt;-->
+    <!--          <div class="hidden-md hidden-lg">-->
+    <!--            <div class="inline pos-rel">-->
+    <!--              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">-->
+    <!--                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>-->
+    <!--              </button>-->
+
+    <!--              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">-->
+    <!--                <li>-->
+    <!--                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">-->
+    <!--																			<span class="green">-->
+    <!--																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>-->
+    <!--																			</span>-->
+    <!--                  </a>-->
+    <!--                </li>-->
+
+    <!--                <li>-->
+    <!--                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">-->
+    <!--																			<span class="red">-->
+    <!--																				<i class="ace-icon fa fa-trash-o bigger-120"></i>-->
+    <!--																			</span>-->
+    <!--                  </a>-->
+    <!--                </li>-->
+    <!--              </ul>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </td>-->
+    <!--      </tr>-->
+
+    <!--      </tbody>-->
+    <!--    </table>-->
 
     <!-- Modal -->
     <div id="form_modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -96,42 +141,44 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">姓名</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="姓名" v-model="teacher.name">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">昵称</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="昵称" v-model="teacher.nickname">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">头像</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="头像" v-model="teacher.image">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">职位</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="职位" v-model="teacher.position">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">座右铭</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="座右铭" v-model="teacher.motto">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">简介</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" placeholder="简介" v-model="teacher.intro">
-                        </div>
-                    </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="姓名" v-model="teacher.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">昵称</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="昵称" v-model="teacher.nickname">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">头像</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="头像" v-model="teacher.image">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">职位</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="职位" v-model="teacher.position">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">座右铭</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="座右铭" v-model="teacher.motto">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">简介</label>
+                <div class="col-sm-10">
+<!--                  <input type="text" class="form-control" placeholder="简介" v-model="teacher.intro">-->
+                  <textarea v-model="teacher.intro" class="form-control" rows="5"></textarea>
+
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -192,15 +239,15 @@ export default {
     save() {
       let _this = this;
       // 保存校验
-        if(1 != 1
-              || !Validator.require(_this.teacher.name, "姓名")
-              || !Validator.length(_this.teacher.name, "姓名", 1, 50)
-              || !Validator.length(_this.teacher.nickname, "昵称", 1, 50)
-              || !Validator.length(_this.teacher.image, "头像", 1, 100)
-              || !Validator.length(_this.teacher.position, "职位", 1, 50)
-              || !Validator.length(_this.teacher.motto, "座右铭", 1, 50)
-              || !Validator.length(_this.teacher.intro, "简介", 1, 500)
-        ){
+      if (1 != 1
+          || !Validator.require(_this.teacher.name, "姓名")
+          || !Validator.length(_this.teacher.name, "姓名", 1, 50)
+          || !Validator.length(_this.teacher.nickname, "昵称", 1, 50)
+          || !Validator.length(_this.teacher.image, "头像", 1, 100)
+          || !Validator.length(_this.teacher.position, "职位", 1, 50)
+          || !Validator.length(_this.teacher.motto, "座右铭", 1, 50)
+          || !Validator.length(_this.teacher.intro, "简介", 1, 500)
+      ) {
         return;
       }
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/teacher/save`,
@@ -214,7 +261,7 @@ export default {
           $('.modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
-        }else{
+        } else {
           Toast.warning(responseDto.message);
         }
 
