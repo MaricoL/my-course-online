@@ -342,7 +342,7 @@ export default {
       _this.course = Object.assign({}, course);
       // 查询当前课程所有的分类信息
       _this.listCourseCategory(course.id);
-      $('.modal').modal('show');
+      $('#form_modal').modal('show');
     },
     // 修改课程内容，弹出模态框
     editContent(course) {
@@ -391,7 +391,8 @@ export default {
         let responseDto = response.data;
         if (responseDto.success) {
           // Toast.success('内容保存成功！');
-          _this.saveContentLabel = new Date();
+          let now = Tool.dateFormat("mm:ss",new Date());
+          _this.saveContentLabel = `最后保存时间：${now}`;
         } else {
           Toast.warning(responseDto.message);
         }
@@ -424,7 +425,7 @@ export default {
           Toast.success("保存成功！");
           // console.log("新增课程列表结果：", responseDto.content);
           // 关闭模态框
-          $('.modal').modal('hide');
+          $('#form_modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
         } else {
@@ -506,6 +507,8 @@ export default {
     },
     listCourseCategory(courseId) {
       const _this = this;
+      // 展开所有的节点
+      _this.tree.expandAll(false);
       _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/list-category/${courseId}`)
           .then(response => {
             const responseDto = response.data;
