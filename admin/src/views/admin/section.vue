@@ -209,8 +209,7 @@ export default {
       _this.list(1);
       // 激活样式方法一：
       // 调用父组件的 activeSideBar 方法
-      // this.$parent.activeSideBar('business-section-sidebar');
-      // this.list();
+      this.$parent.activeSideBar('business-course-sidebar');
     }
   },
   methods: {
