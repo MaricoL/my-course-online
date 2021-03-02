@@ -54,6 +54,9 @@
                 <i class="ace-icon fa fa-book green"></i>
                 内容
               </button>&nbsp;
+              <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
+                排序
+              </button>&nbsp;
               <button class="btn btn-white btn-xs btn-default btn-round" @click="edit(course)">
                 <i class="ace-icon fa fa-pencil blue"></i>
                 编辑
@@ -68,88 +71,8 @@
       </div>
     </div>
 
-    <!--    <table id="simple-table" class="table  table-bordered table-hover">-->
-    <!--      <thead>-->
-    <!--      <tr>-->
-    <!--        <th>id</th>-->
-    <!--        <th>名称</th>-->
-    <!--        <th>概述</th>-->
-    <!--        <th>时长</th>-->
-    <!--        <th>价格（元）</th>-->
-    <!--        <th>封面</th>-->
-    <!--        <th>级别</th>-->
-    <!--        <th>收费</th>-->
-    <!--        <th>状态</th>-->
-    <!--        <th>报名数</th>-->
-    <!--        <th>顺序</th>-->
-    <!--        <th>创建时间</th>-->
-    <!--        <th>修改时间</th>-->
-    <!--        <th>操作</th>-->
-    <!--      </tr>-->
-    <!--      </thead>-->
-
-    <!--      <tbody>-->
-    <!--      <tr v-for="course in courses" :key="course.id">-->
-    <!--        <td>{{ course.id }}</td>-->
-    <!--        <td>{{ course.name }}</td>-->
-    <!--        <td>{{ course.summary }}</td>-->
-    <!--        <td>{{ course.time }}</td>-->
-    <!--        <td>{{ course.price }}</td>-->
-    <!--        <td>{{ course.image }}</td>-->
-    <!--        <td>{{ COURSE_LEVEL | optionObj(course.level) }}</td>-->
-    <!--        <td>{{ COURSE_CHARGE | optionObj(course.charge) }}</td>-->
-    <!--        <td>{{ COURSE_STATUS | optionObj(course.status) }}</td>-->
-    <!--        <td>{{ course.enroll }}</td>-->
-    <!--        <td>{{ course.sort }}</td>-->
-    <!--        <td>{{ course.createdAt }}</td>-->
-    <!--        <td>{{ course.updatedAt }}</td>-->
-    <!--        <td>-->
-    <!--          &lt;!&ndash; 在小屏幕和超小屏幕上隐藏 &ndash;&gt;-->
-    <!--          <div class="hidden-sm hidden-xs btn-group">-->
-    <!--            <button class="btn btn-xs btn-info" @click="edit(course)">-->
-    <!--              <i class="ace-icon fa fa-pencil bigger-120"></i>-->
-    <!--            </button>-->
-
-    <!--            <button class="btn btn-xs btn-danger" @click="del(course.id)">-->
-    <!--              <i class="ace-icon fa fa-trash-o bigger-120"></i>-->
-    <!--            </button>-->
-
-    <!--          </div>-->
-
-    <!--          &lt;!&ndash; 在中屏幕和大屏幕上隐藏 &ndash;&gt;-->
-    <!--          <div class="hidden-md hidden-lg">-->
-    <!--            <div class="inline pos-rel">-->
-    <!--              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">-->
-    <!--                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>-->
-    <!--              </button>-->
-
-    <!--              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">-->
-    <!--                <li>-->
-    <!--                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">-->
-    <!--																			<span class="green">-->
-    <!--																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>-->
-    <!--																			</span>-->
-    <!--                  </a>-->
-    <!--                </li>-->
-
-    <!--                <li>-->
-    <!--                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">-->
-    <!--																			<span class="red">-->
-    <!--																				<i class="ace-icon fa fa-trash-o bigger-120"></i>-->
-    <!--																			</span>-->
-    <!--                  </a>-->
-    <!--                </li>-->
-    <!--              </ul>-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--        </td>-->
-    <!--      </tr>-->
-
-    <!--      </tbody>-->
-    <!--    </table>-->
-
     <!-- Modal -->
-    <div id="form_modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="form-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -285,7 +208,48 @@
       </div>
     </div>
 
-
+    <!-- course-sort-modal -->
+    <div id="course-sort-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">排序</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-lg-3">
+                  当前排序
+                </label>
+                <div class="col-lg-9">
+                  <input class="form-control" v-model="sort.oldSort" name="oldSort" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-lg-3">
+                  新排序
+                </label>
+                <div class="col-lg-9">
+                  <input class="form-control" v-model="sort.newSort" name="newSort">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              取消
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="updateSort()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              更新排序
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 </template>
 
@@ -305,7 +269,12 @@ export default {
       COURSE_CHARGE,
       COURSE_STATUS,
       tree: {},
-      saveContentLabel: ''
+      saveContentLabel: '',
+      sort: {
+        id: '',
+        oldSort: 0,
+        newSort: 0
+      }
     }
   },
   mounted() {
@@ -329,7 +298,7 @@ export default {
       _this.tree.checkAllNodes(false);
       // 合并所有父节点
       _this.tree.expandAll(false);
-      $('.modal').modal({
+      $('#form-modal').modal({
         show: true,
         backdrop: 'static'  //  禁止点击模态框外部时关闭
       });
@@ -342,7 +311,7 @@ export default {
       _this.course = Object.assign({}, course);
       // 查询当前课程所有的分类信息
       _this.listCourseCategory(course.id);
-      $('#form_modal').modal('show');
+      $('#form-modal').modal('show');
     },
     // 修改课程内容，弹出模态框
     editContent(course) {
@@ -391,7 +360,7 @@ export default {
         let responseDto = response.data;
         if (responseDto.success) {
           // Toast.success('内容保存成功！');
-          let now = Tool.dateFormat("mm:ss",new Date());
+          let now = Tool.dateFormat("mm:ss", new Date());
           _this.saveContentLabel = `最后保存时间：${now}`;
         } else {
           Toast.warning(responseDto.message);
@@ -425,7 +394,7 @@ export default {
           Toast.success("保存成功！");
           // console.log("新增课程列表结果：", responseDto.content);
           // 关闭模态框
-          $('#form_modal').modal('hide');
+          $('#form-modal').modal('hide');
           // 刷新表格数据
           _this.list(1);
         } else {
@@ -546,6 +515,37 @@ export default {
       let zNodes = _this.categorys;
 
       _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+    },
+
+    // 打开排序模态框
+    openSortModal(course) {
+      let _this = this;
+      _this.sort = {
+        id : course.id,
+        oldSort: course.sort,
+        newSort: course.sort
+      }
+      $('#course-sort-modal').modal('show');
+    },
+
+    // 更新排序
+    updateSort(){
+      let _this = this;
+      if (_this.sort.oldSort === _this.sort.newSort) {
+        Toast.warning('排序没有变化！');
+        return;
+      }
+      _this.$ajax.post(`${process.env.VUE_APP_SERVER}/business/admin/course/sort`,_this.sort)
+      .then(response => {
+        const responseDto = response.data;
+        if (responseDto.success) {
+          Toast.success('更新排序成功！');
+          $('#course-sort-modal').modal('hide');
+          _this.list(1);
+        }else{
+          Toast.error('更新排序失败！');
+        }
+      })
     }
 
     // list() {

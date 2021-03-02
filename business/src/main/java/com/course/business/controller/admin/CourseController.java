@@ -97,4 +97,12 @@ public class CourseController {
         responseDto.setSuccess(count == 1);
         return responseDto;
     }
+
+    // 更新课程排序
+    @PostMapping("/sort")
+    public ResponseDto<SortDto> sort(@RequestBody SortDto sortDto) {
+        ResponseDto<SortDto> responseDto = new ResponseDto<>();
+        courseService.sort(sortDto);
+        return responseDto;
+    }
 }
