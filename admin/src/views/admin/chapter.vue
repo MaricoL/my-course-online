@@ -147,7 +147,7 @@ export default {
     let _this = this;
 
     // ||{} ：小技巧，如果course为空，则 course.id 报错，而空对象不会报错
-    let course = SessionStorage.get("course") || {};
+    let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
     if (Tool.isEmpty(course)) {
       _this.$router.push("/welcome");
     } else {
@@ -241,7 +241,7 @@ export default {
     },
 
     toSection(chapter) {
-      SessionStorage.set("chapter", chapter);
+      SessionStorage.set(SESSION_KEY_CHAPTER, chapter);
       this.$router.push("/business/section");
     }
 

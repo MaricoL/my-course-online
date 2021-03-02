@@ -433,7 +433,7 @@ export default {
       })
     },
     toChapter(course) {
-      SessionStorage.set("course", course);
+      SessionStorage.set(SESSION_KEY_COURSE, course);
       this.$router.push("/business/chapter");
     },
 

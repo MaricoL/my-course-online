@@ -197,8 +197,8 @@ export default {
   },
   mounted() {
     let _this = this;
-    let course = SessionStorage.get("course") || {};
-    let chapter = SessionStorage.get("chapter") || {};
+    let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
+    let chapter = SessionStorage.get(SESSION_KEY_CHAPTER) || {};
     if (Tool.isEmpty(chapter) || Tool.isEmpty(chapter)) {
       _this.$router.push("/welcome");
     } else {
